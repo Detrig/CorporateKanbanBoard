@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="EditTextAuthStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:layout_marginStart">64dp</item>
+        <item name="android:layout_marginEnd">64dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:fontFamily">@font/onest_medium</item>
+        <item name="boxStrokeColor">@color/black</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+
+    <style name="BasicTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/onest_bold</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

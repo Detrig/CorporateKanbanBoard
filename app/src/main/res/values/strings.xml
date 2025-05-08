@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CorporateKanbanBoard</string>
+    <string name="emailEditTextHint">Почта</string>
+    <string name="passwordHint">Пароль</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="login">Войти</string>
+    <string name="dontGetEmail">Не получили письмо?</string>
+    <string name="recoverPassword">Восстановить пароль</string>
+    <string name="forgotPassword">Забыли пароль?</string>
+    <string name="authorize">Авторизация</string>
+    <string name="repeatPasswordHint">Повторите пароль</string>
+    <string name="registration">Регистрация</string>
+    <string name="recoveringPasswordTextHeader">Восстановление пароля</string>
+
+    <style name="AuthMarginHorizontal" >
+        <item name="android:layout_marginStart">64dp</item>
+        <item name="android:layout_marginEnd">64dp</item>
+        <item name="backgroundTint">@color/black</item>
+        <item name="fontFamily">@font/onest_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

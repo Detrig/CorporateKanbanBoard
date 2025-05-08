@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/border_background">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="64dp"
+                android:layout_marginTop="32dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/kanbanlogo"
+                android:layout_weight="0.25"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.65"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="emailAddress"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/emailEditTextHint"
+                    android:inputType="textEmailAddress" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/passwordHint"
+                    android:inputType="textPassword" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/repeatPasswordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/repeatPasswordHint"
+                    android:inputType="textPassword" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/sendEmailTV"-->
+                <!--                    style="@style/MyTextViewStyle"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="64dp"-->
+                <!--                    android:layout_marginTop="8dp"-->
+                <!--                    android:padding="8dp"-->
+                <!--                    android:text="@string/dontGetEmail"-->
+                <!--                    android:textSize="16sp" />-->
+
+                <Button
+                    android:id="@+id/registerButton"
+                    style="@style/AuthMarginHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64dp"
+                    android:text="@string/register" />
+
+                <TextView
+                    android:id="@+id/loginTV"
+                    style="@style/BasicTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@string/login"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+</LinearLayout>
