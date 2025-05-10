@@ -1,13 +1,13 @@
-package com.example.disputer.authentication.domain.usecase
+package github.detrig.corporatekanbanboard.authentication.domain.usecase
 
-import com.example.disputer.authentication.data.AuthUser
-import com.example.disputer.authentication.domain.repository.CurrentUserRepository
-import com.example.disputer.core.Resource
+import github.detrig.corporatekanbanboard.authentication.domain.repository.CurrentUserRepository
+import github.detrig.corporatekanbanboard.core.Resource
+import github.detrig.corporatekanbanboard.domain.model.User
 
 class GetCurrentUserRoleUseCase(
     private val currentUserRepository: CurrentUserRepository
 ) {
-    suspend operator fun invoke(): Resource<AuthUser> {
+    suspend operator fun invoke(): Resource<User> {
         return currentUserRepository.getCurrentUser()
     }
 }

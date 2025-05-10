@@ -1,11 +1,12 @@
-package com.example.disputer.authentication.data
+package github.detrig.corporatekanbanboard.authentication.data
 
-import com.example.disputer.authentication.domain.repository.CurrentUserRepository
-import com.example.disputer.core.Resource
+import github.detrig.corporatekanbanboard.authentication.domain.repository.CurrentUserRepository
+import github.detrig.corporatekanbanboard.core.Resource
+import github.detrig.corporatekanbanboard.domain.model.User
 
 class CurrentUserRepositoryImpl(
     private val currentUserDataSource: FirebaseCurrentDataSource
 ) : CurrentUserRepository {
-    override suspend fun getCurrentUser(): Resource<AuthUser> =
+    override suspend fun getCurrentUser(): Resource<User> =
         currentUserDataSource.getCurrentUser()
 }

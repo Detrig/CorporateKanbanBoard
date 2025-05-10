@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/boardImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:src="@color/light_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
+
+    <TextView
+        android:id="@+id/boardTitle"
+        style="@style/NormalTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:maxLines="1"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/boardImage"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Header of board" />
+
+    <TextView
+        android:id="@+id/boardDescription"
+        style="@style/NormalTextViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/boardImage"
+        app:layout_constraintTop_toBottomOf="@+id/boardTitle"
+        tools:text="LFLFLFLFADA" />
+
+
+    <TextView
+        android:id="@+id/boardCreator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:fontFamily="@font/onest_regular"
+        android:text="Создатель: "
+        app:layout_constraintStart_toEndOf="@+id/boardImage"
+        app:layout_constraintTop_toBottomOf="@+id/boardDescription" />
+
+    <TextView
+        android:id="@+id/boardDateCreated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:text="Дата создания: "
+        app:layout_constraintBottom_toBottomOf="@+id/boardImage"
+        app:layout_constraintStart_toEndOf="@+id/boardImage"
+        app:layout_constraintTop_toBottomOf="@+id/boardCreator"
+        tools:text="09.05.2025" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

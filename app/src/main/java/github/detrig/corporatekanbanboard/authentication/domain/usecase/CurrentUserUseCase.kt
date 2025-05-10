@@ -1,7 +1,7 @@
-package com.example.disputer.authentication.domain.usecase
+package github.detrig.corporatekanbanboard.authentication.domain.usecase
 
-import com.example.disputer.authentication.data.UserRepository
-import com.example.disputer.authentication.domain.repository.CurrentUserRepository
+import github.detrig.corporatekanbanboard.authentication.data.UserRepository
+import github.detrig.corporatekanbanboard.authentication.domain.repository.CurrentUserRepository
 
 class CurrentUserUseCase(private val currentUserRepository: CurrentUserRepository) {
     suspend operator fun invoke() = currentUserRepository.getCurrentUser()

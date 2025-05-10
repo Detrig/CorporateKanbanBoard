@@ -1,5 +1,5 @@
-package com.example.disputer.authentication.presentation.forgotpassword
+package github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword
 
-import com.example.disputer.core.Screen
+import github.detrig.corporatekanbanboard.core.Screen
 
 object ForgotPasswordScreen : Screen.Add(ForgotPasswordFragment::class.java)

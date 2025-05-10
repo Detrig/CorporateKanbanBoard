@@ -1,13 +1,13 @@
-package com.example.disputer.authentication.presentation.forgotpassword
+package github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.disputer.authentication.presentation.main.MainActivity
-import com.example.disputer.core.AbstractFragment
-import com.example.disputer.core.ProvideViewModel
-import com.example.disputer.databinding.FragmentForgotPasswordBinding
+import github.detrig.corporatekanbanboard.core.AbstractFragment
+import github.detrig.corporatekanbanboard.core.ProvideViewModel
+import github.detrig.corporatekanbanboard.databinding.FragmentForgotPasswordBinding
+import github.detrig.corporatekanbanboard.main.MainActivity
 
 class ForgotPasswordFragment : AbstractFragment<FragmentForgotPasswordBinding>() {
 

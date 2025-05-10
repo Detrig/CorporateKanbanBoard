@@ -1,4 +1,4 @@
-package com.example.disputer.authentication.data
+package github.detrig.corporatekanbanboard.authentication.data
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

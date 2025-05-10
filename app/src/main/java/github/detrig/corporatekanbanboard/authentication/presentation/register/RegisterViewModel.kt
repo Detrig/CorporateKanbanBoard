@@ -1,9 +1,9 @@
-package com.example.disputer.authentication.presentation.register
+package github.detrig.corporatekanbanboard.authentication.presentation.register
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.authentication.domain.usecase.RegistrationUseCase
-import com.example.disputer.authentication.presentation.login.LoginScreen
-import com.example.disputer.core.Navigation
+import github.detrig.corporatekanbanboard.authentication.domain.usecase.RegistrationUseCase
+import github.detrig.corporatekanbanboard.authentication.presentation.login.LoginScreen
+import github.detrig.corporatekanbanboard.core.Navigation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,13 +23,13 @@ class RegisterViewModel(
         registerUiStateLiveDataWrapper.update(RegisterUiState.Initial)
     }
 
-    fun register(email: String, password: String, repeatPassword: String, isCoach: Boolean, isParent: Boolean) {
+    fun register(email: String, password: String, repeatPassword: String) {
         registerUiStateLiveDataWrapper.update(RegisterUiState.Loading)
 
         if (password == repeatPassword) {
             viewModelScope.launch(dispatcher) {
                 try {
-                    registerUseCase.invoke(email, password, isCoach, isParent)
+                    registerUseCase.invoke(email, password)
                     withContext(dispatcherMain) {
                         registerUiStateLiveDataWrapper.update(RegisterUiState.Success("Подтвердите почту!"))
                         loginScreen()

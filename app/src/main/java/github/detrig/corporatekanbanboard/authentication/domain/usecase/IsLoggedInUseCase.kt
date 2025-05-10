@@ -1,6 +1,6 @@
-package com.example.disputer.authentication.domain.usecase
+package github.detrig.corporatekanbanboard.authentication.domain.usecase
 
-import com.example.disputer.authentication.data.UserRepository
+import github.detrig.corporatekanbanboard.authentication.data.UserRepository
 
 class IsLoggedInUseCase(private val userRepository: UserRepository) {
 

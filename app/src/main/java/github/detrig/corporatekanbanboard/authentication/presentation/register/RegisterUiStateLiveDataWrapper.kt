@@ -1,6 +1,6 @@
-package com.example.disputer.authentication.presentation.register
+package github.detrig.corporatekanbanboard.authentication.presentation.register
 
-import com.example.disputer.core.LiveDataWrapper
+import github.detrig.corporatekanbanboard.core.LiveDataWrapper
 
 interface RegisterUiStateLiveDataWrapper : LiveDataWrapper.Mutable<RegisterUiState> {
 

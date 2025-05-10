@@ -1,5 +1,5 @@
-package com.example.disputer.authentication.presentation.register
+package github.detrig.corporatekanbanboard.authentication.presentation.register
 
-import com.example.disputer.core.Screen
+import github.detrig.corporatekanbanboard.core.Screen
 
 object RegisterScreen : Screen.Add(RegisterFragment::class.java)

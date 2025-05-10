@@ -1,6 +1,6 @@
-package com.example.disputer.authentication.domain.usecase
+package github.detrig.corporatekanbanboard.authentication.domain.usecase
 
-import com.example.disputer.authentication.data.AuthRepository
+import github.detrig.corporatekanbanboard.authentication.data.AuthRepository
 
 class LoginUseCase(private val authRepository: AuthRepository) {
 

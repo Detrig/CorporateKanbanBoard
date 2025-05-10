@@ -1,8 +1,8 @@
-package com.example.disputer.authentication.presentation.forgotpassword
+package github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword
 
 import android.view.View
 import android.widget.Toast
-import com.example.disputer.databinding.FragmentForgotPasswordBinding
+import github.detrig.corporatekanbanboard.databinding.FragmentForgotPasswordBinding
 
 interface ForgotPasswordUiState {
 

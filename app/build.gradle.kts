@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -55,6 +56,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.google.firebase:firebase-messaging:24.1.1")
+    implementation(libs.firebase.firestore.ktx)
 
     //Authentication with Credential Manager
     implementation(libs.play.services.auth)
@@ -62,4 +64,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation(libs.google.gson)
+
+    implementation(libs.material)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
 }

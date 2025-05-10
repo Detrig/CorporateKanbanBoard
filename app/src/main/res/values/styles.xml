@@ -14,9 +14,20 @@
         <item name="boxStrokeWidth">2dp</item>
     </style>
 
-    <style name="BasicTextViewStyle" parent="Widget.MaterialComponents.TextView">
+    <style name="BoldTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="fontFamily">@font/onest_bold</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="NormalTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/onest_medium</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RoundedImageViewStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">32dp</item>
     </style>
 </resources>
