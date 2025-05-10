@@ -25,9 +25,8 @@ class RemoteBoardsDataSourceImpl(
     }
 
     override suspend fun addBoard(board: Board): String {
-        val docRef = firestore.collection(BOARDS_KEY)
-            .add(board)
-            .await()
+        val docRef = firestore.collection(BOARDS_KEY).document() // генерирует новый ID
+        docRef.set(board).await()
         return docRef.id
     }
 

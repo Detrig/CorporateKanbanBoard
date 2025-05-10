@@ -5,5 +5,9 @@ import github.detrig.corporatekanbanboard.domain.model.User
 
 interface CurrentUserLiveDataWrapper : LiveDataWrapper.Mutable<User> {
 
-    class Base : CurrentUserLiveDataWrapper, LiveDataWrapper.Abstract<User>()
+    fun getUserId() : String?
+
+    class Base : CurrentUserLiveDataWrapper, LiveDataWrapper.Abstract<User>() {
+        override fun getUserId() = liveData.value?.id
+    }
 }

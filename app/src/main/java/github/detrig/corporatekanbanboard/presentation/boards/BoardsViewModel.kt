@@ -1,18 +1,59 @@
 package github.detrig.corporatekanbanboard.presentation.boards
 
+import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
 import github.detrig.corporatekanbanboard.core.BaseCommunication
+import github.detrig.corporatekanbanboard.core.Communication
 import github.detrig.corporatekanbanboard.core.Navigation
+import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
+import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardScreen
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
+import kotlinx.coroutines.launch
 
 class BoardsViewModel(
     private val navigation: Navigation,
-    private val boards: BaseCommunication<List<Board>>,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+    private val boardsCommunication: Communication<List<Board>>,
+    private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
+    private val boardsRepository: BoardsRepository,
+    private val viewModelScope: CoroutineScope,
+    private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
+    private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
+    /**
+     * КОД ХУЙНИ НО ВРЕМЕНИ НЕТ(
+     */
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
 
+    private val _savedBoards = MutableLiveData<List<Board>>()
+    val savedBoard: LiveData<List<Board>> = _savedBoards
 
+    fun getBoards() {
+        viewModelScope.launch(dispatcherIo) {
+            val boardsResult =
+                boardsRepository.getBoardsForUser(currentUserLiveDataWrapper.getUserId() ?: "")
+            when (boardsResult) {
+                is Result.Success -> {
+                    boardsCommunication.setData(boardsResult.data)
+                    _savedBoards.value = boardsResult.data
+                }
+
+                is Result.Error -> _error.postValue(boardsResult.message)
+            }
+        }
+    }
+
+    fun observe(owner: LifecycleOwner, observer: Observer<List<Board>>) =
+        boardsCommunication.observe(owner, observer)
+
+    fun addBoardScreen() = navigation.update(AddBoardScreen)
 }

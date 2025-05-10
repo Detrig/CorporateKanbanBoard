@@ -1,8 +1,8 @@
 [versions]
-agp = "8.6.0"
+agp = "8.3.1"
 firebaseBom = "33.5.1"
 gsonVersion = "2.11.0"
-kotlin = "1.9.0"
+kotlin = "1.9.22"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -12,7 +12,7 @@ material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 playServicesAuth = "21.2.0"
-roomKtx = "2.7.17.1"
+roomKtx = "2.7.1"
 roomRuntime = "2.7.1"
 viewbinding = "8.8.1"
 firebaseFirestoreKtx = "25.1.2"
@@ -25,6 +25,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

@@ -1,7 +1,7 @@
 package github.detrig.corporatekanbanboard.domain.model
 
 data class BoardMember(
-    val user: User,
+    val user: User = User(),
     val access: BoardAccess = BoardAccess.VIEWER
 )
 

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/rounded_stroke">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/boardImage"
@@ -43,13 +45,14 @@
 
     <TextView
         android:id="@+id/boardCreator"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="8dp"
-        android:maxLines="1"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/onest_regular"
+        android:maxLines="1"
         android:text="Создатель: "
+        app:layout_constraintEnd_toEndOf="@+id/boardDescription"
         app:layout_constraintStart_toEndOf="@+id/boardImage"
         app:layout_constraintTop_toBottomOf="@+id/boardDescription" />
 

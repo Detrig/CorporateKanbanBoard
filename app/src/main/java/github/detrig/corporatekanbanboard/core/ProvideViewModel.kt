@@ -1,5 +1,6 @@
 package github.detrig.corporatekanbanboard.core
 
+import android.net.ConnectivityManager
 import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.authentication.presentation.login.LoginViewModel
 import github.detrig.corporatekanbanboard.authentication.data.AuthRepository
@@ -24,9 +25,14 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import github.detrig.corporatekanbanboard.data.local.database.AppDatabase
+import github.detrig.corporatekanbanboard.data.local.datasource.LocalBoardsDataSourceImpl
+import github.detrig.corporatekanbanboard.data.remote.boards.BoardsRepositoryImpl
+import github.detrig.corporatekanbanboard.data.remote.boards.RemoteBoardsDataSourceImpl
+import github.detrig.corporatekanbanboard.data.remote.user.RemoteUserDataSourceImpl
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsViewModel
 import github.detrig.corporatekanbanboard.main.MainViewModel
+import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -73,9 +79,15 @@ interface ProvideViewModel {
         private val currentUserLiveDataWrapper = CurrentUserLiveDataWrapper.Base()
         private val getCurrentUserRoleUseCase = GetCurrentUserRoleUseCase(currentUserRepository)
 
+        //User
+        private val userDataSource = RemoteUserDataSourceImpl(fireBaseFirestore)
+
         //Boards
         //private val boardsLocalRepo
         private val boardsCommunication = BaseCommunication<List<Board>>()
+        private val localBoardDataSource = LocalBoardsDataSourceImpl(appDatabase.boardsDao())
+        private val remoteBoardDataSource = RemoteBoardsDataSourceImpl(fireBaseFirestore)
+        private val boardsRepository = BoardsRepositoryImpl(localBoardDataSource, remoteBoardDataSource, userDataSource)
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -113,7 +125,16 @@ interface ProvideViewModel {
 
                 BoardsViewModel::class.java -> BoardsViewModel(
                     navigation,
-                    boardsCommunication
+                    boardsCommunication,
+                    currentUserLiveDataWrapper,
+                    boardsRepository,
+                    viewModelScope
+                )
+
+                AddBoardViewModel::class.java -> AddBoardViewModel(
+                    boardsRepository,
+                    currentUserLiveDataWrapper,
+                    viewModelScope
                 )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T

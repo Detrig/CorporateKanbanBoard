@@ -1,6 +1,7 @@
 package github.detrig.corporatekanbanboard.presentation.boards
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,21 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
         viewModel = (activity as ProvideViewModel).viewModel(BoardsViewModel::class.java)
 
         initRcView()
+        viewModel.getBoards()
+
+        viewModel.savedBoard.value?.let {
+            boardsRcViewAdapter.update(ArrayList(it))
+        }
+
+        viewModel.observe(viewLifecycleOwner, { boardList ->
+            Log.d("alz04", "$boardList")
+            boardsRcViewAdapter.update(ArrayList(boardList))
+        })
+
+        binding.addBoardButton.setOnClickListener {
+            Log.d("alz04", "addBoardButton clicked")
+            viewModel.addBoardScreen()
+        }
     }
 
     private fun initRcView() {

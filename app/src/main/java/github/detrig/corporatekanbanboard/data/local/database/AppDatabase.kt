@@ -6,11 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import github.detrig.corporatekanbanboard.data.local.dao.BoardsDao
+import github.detrig.corporatekanbanboard.data.local.model.BoardEntity
 import github.detrig.corporatekanbanboard.data.local.model.BoardTypeConverter
-import github.detrig.corporatekanbanboard.domain.model.Board
 
 @Database(
-    entities = [Board::class],
+    entities = [BoardEntity::class],
     version = 1,
     exportSchema = false
 )

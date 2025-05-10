@@ -1,5 +1,8 @@
 package github.detrig.corporatekanbanboard.data.remote.boards
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
@@ -10,22 +13,20 @@ import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserDataS
 class BoardsRepositoryImpl(
     private val localBoard: LocalBoardsDataSource,
     private val remoteBoard: RemoteBoardsDataSource,
-    private val usersDataSource: RemoteUserDataSource
+    private val usersDataSource: RemoteUserDataSource,
 ) : BoardsRepository {
+
 
     override suspend fun getBoardsForUser(userId: String): Result<List<Board>> {
         return try {
             val remoteBoards = remoteBoard.getBoardsForUser(userId)
-
-            // Сохраняем их локально (опционально, если нужно синхронизировать)
-            localBoard.clearAll()
             localBoard.insertBoards(remoteBoards)
-
             Result.Success(remoteBoards)
         } catch (e: Exception) {
-            Result.Error("Failed to sync boards: ${e.message}")
+            getCachedBoards(userId)
         }
     }
+
 
     override suspend fun addBoardRemote(userId: String, board: Board): Result<String> {
         return try {
@@ -85,6 +86,19 @@ class BoardsRepositoryImpl(
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error("Failed to remove user from board: ${e.message}")
+        }
+    }
+
+    private suspend fun getCachedBoards(userId: String): Result<List<Board>> {
+        return try {
+            val cachedBoards = localBoard.getBoards()
+            if (cachedBoards.isNotEmpty()) {
+                Result.Success(cachedBoards)
+            } else {
+                Result.Error("No cached data")
+            }
+        } catch (e: Exception) {
+            Result.Error("Cache error: ${e.message}")
         }
     }
 
