@@ -1,8 +1,8 @@
-package com.example.disputer.authentication.presentation.login
+package github.detrig.corporatekanbanboard.authentication.presentation.login
 
 import android.view.View
 import android.widget.Toast
-import com.example.disputer.databinding.FragmentLoginBinding
+import github.detrig.corporatekanbanboard.databinding.FragmentLoginBinding
 
 interface LoginUiState {
 
@@ -29,7 +29,7 @@ interface LoginUiState {
         Abstract(true, true, true, true, View.GONE)
 
     object Loading :
-        Abstract(false, false, false, false, View.VISIBLE)
+        Abstract(false, false, false, true, View.VISIBLE)
 
     data class Error(private val errorText: String?) :
         Abstract(true, true, true, true, View.GONE) {

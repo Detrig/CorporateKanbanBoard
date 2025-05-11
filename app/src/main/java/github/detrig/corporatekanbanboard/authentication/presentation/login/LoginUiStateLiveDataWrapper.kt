@@ -1,6 +1,6 @@
-package com.example.disputer.authentication.presentation.login
+package github.detrig.corporatekanbanboard.authentication.presentation.login
 
-import com.example.disputer.core.LiveDataWrapper
+import github.detrig.corporatekanbanboard.core.LiveDataWrapper
 
 interface LoginUiStateLiveDataWrapper : LiveDataWrapper.Mutable<LoginUiState> {
 

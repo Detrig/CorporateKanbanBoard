@@ -1,9 +1,9 @@
-package com.example.disputer.authentication.presentation.register
+package github.detrig.corporatekanbanboard.authentication.presentation.register
 
 import android.view.View
 import android.widget.Toast
-import com.example.disputer.R
-import com.example.disputer.databinding.FragmentRegistrationBinding
+import github.detrig.corporatekanbanboard.R
+import github.detrig.corporatekanbanboard.databinding.FragmentRegistrationBinding
 
 interface RegisterUiState {
 

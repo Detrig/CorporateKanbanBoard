@@ -1,5 +1,5 @@
-package com.example.disputer.authentication.presentation.login
+package github.detrig.corporatekanbanboard.authentication.presentation.login
 
-import com.example.disputer.core.Screen
+import github.detrig.corporatekanbanboard.core.Screen
 
 object LoginScreen : Screen.ReplaceMain(LoginFragment::class.java)

@@ -62,7 +62,7 @@
                     style="@style/AuthMarginHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="64dp"
                     android:text="@string/login" />
 
                 <Button
@@ -82,7 +82,7 @@
                     android:minHeight="40dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    style="@style/BasicTextViewStyle"
+                    style="@style/BoldTextViewStyle"
                     android:text="@string/forgotPassword"
                     android:layout_marginTop="8dp"
                     android:gravity="center"/>

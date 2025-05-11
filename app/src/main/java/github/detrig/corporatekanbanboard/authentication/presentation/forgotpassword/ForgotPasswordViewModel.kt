@@ -1,11 +1,11 @@
-package com.example.disputer.authentication.presentation.forgotpassword
+package github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.authentication.domain.usecase.ForgotPasswordUseCase
-import com.example.disputer.authentication.presentation.login.LoginScreen
-import com.example.disputer.authentication.presentation.register.RegisterScreen
-import com.example.disputer.core.ClearViewModel
-import com.example.disputer.core.Navigation
+import github.detrig.corporatekanbanboard.authentication.domain.usecase.ForgotPasswordUseCase
+import github.detrig.corporatekanbanboard.authentication.presentation.login.LoginScreen
+import github.detrig.corporatekanbanboard.authentication.presentation.register.RegisterScreen
+import github.detrig.corporatekanbanboard.core.ClearViewModel
+import github.detrig.corporatekanbanboard.core.Navigation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

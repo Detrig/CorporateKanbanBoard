@@ -8,15 +8,34 @@
         <item name="android:layout_marginStart">64dp</item>
         <item name="android:layout_marginEnd">64dp</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/edittesdt_uderline</item>
         <item name="android:padding">12dp</item>
         <item name="android:fontFamily">@font/onest_medium</item>
         <item name="boxStrokeColor">@color/black</item>
         <item name="boxStrokeWidth">2dp</item>
     </style>
 
-    <style name="BasicTextViewStyle" parent="Widget.MaterialComponents.TextView">
+    <style name="BoldTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="fontFamily">@font/onest_bold</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="NormalTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/onest_medium</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RoundedImageViewStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">32dp</item>
+    </style>
+
+    <style name="DefaultButtonStyle" parent="ShapeAppearanceOverlay.Material3.Button">
+        <item name="fontFamily">@font/onest_medium</item>
+        <item name="cornerSize">8dp</item>
+        <item name="backgroundTint">@color/gray</item>
+        <item name="android:padding">8dp</item>
     </style>
 </resources>

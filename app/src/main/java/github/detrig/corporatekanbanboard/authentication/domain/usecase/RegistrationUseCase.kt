@@ -1,9 +1,9 @@
-package com.example.disputer.authentication.domain.usecase
+package github.detrig.corporatekanbanboard.authentication.domain.usecase
 
-import com.example.disputer.authentication.data.AuthRepository
+import github.detrig.corporatekanbanboard.authentication.data.AuthRepository
 
 class RegistrationUseCase(private val authRepository: AuthRepository) {
 
-    suspend operator fun invoke(email: String, password: String, isCoach: Boolean, isParent: Boolean) =
-        authRepository.register(email, password, isCoach, isParent)
+    suspend operator fun invoke(email: String, password: String) =
+        authRepository.register(email, password)
 }

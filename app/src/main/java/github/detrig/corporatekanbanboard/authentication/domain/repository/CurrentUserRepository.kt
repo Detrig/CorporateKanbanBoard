@@ -1,9 +1,8 @@
-package com.example.disputer.authentication.domain.repository
+package github.detrig.corporatekanbanboard.authentication.domain.repository
 
-import com.example.disputer.authentication.data.AuthUser
-import com.example.disputer.authentication.data.User
-import com.example.disputer.core.Resource
+import github.detrig.corporatekanbanboard.core.Resource
+import github.detrig.corporatekanbanboard.domain.model.User
 
 interface CurrentUserRepository {
-    suspend fun getCurrentUser(): Resource<AuthUser>
+    suspend fun getCurrentUser(): Resource<User>
 }

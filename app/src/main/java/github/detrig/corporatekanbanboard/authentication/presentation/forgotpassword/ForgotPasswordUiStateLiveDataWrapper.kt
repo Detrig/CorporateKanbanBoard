@@ -1,6 +1,6 @@
-package com.example.disputer.authentication.presentation.forgotpassword
+package github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword
 
-import com.example.disputer.core.LiveDataWrapper
+import github.detrig.corporatekanbanboard.core.LiveDataWrapper
 
 interface ForgotPasswordUiStateLiveDataWrapper : LiveDataWrapper.Mutable<ForgotPasswordUiState> {
 

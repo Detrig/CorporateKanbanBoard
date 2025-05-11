@@ -1,10 +1,9 @@
-package com.example.disputer.authentication.data
+package github.detrig.corporatekanbanboard.authentication.data
 
 import android.util.Patterns
-import com.example.disputer.coach.data.Coach
-import com.example.disputer.parent.data.Parent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import github.detrig.corporatekanbanboard.domain.model.User
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,8 +18,6 @@ interface AuthRepository {
     suspend fun register(
         email: String,
         password: String,
-        isCoach: Boolean,
-        isParent: Boolean,
         repeatPassword: String = "",
     )
 
@@ -31,7 +28,7 @@ interface AuthRepository {
         private val firestore: FirebaseFirestore
     ) : AuthRepository {
 
-        override suspend fun register(email: String, password: String,  isCoach: Boolean, isParent: Boolean, repeatPassword : String) {
+        override suspend fun register(email: String, password: String, repeatPassword: String) {
             return suspendCoroutine<Unit> { continuation ->
                 try {
                     firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -39,25 +36,15 @@ interface AuthRepository {
                             val user = authResult.user
                             user?.sendEmailVerification()?.addOnSuccessListener {
 
-                                if(isCoach) {
-                                    val newCoach = Coach(uid = user.uid, email = user.email.toString())
-                                    firestore.collection("coach").document(newCoach.uid).set(newCoach)
-                                        .addOnSuccessListener {
-                                            continuation.resume(Unit)
-                                        }
-                                        .addOnFailureListener { e ->
-                                            continuation.resumeWithException(e)
-                                        }
-                                } else if (isParent) {
-                                    val newParent = Parent(uid = user.uid, email = user.email.toString())
-                                    firestore.collection("parent").document(newParent.uid).set(newParent)
-                                        .addOnSuccessListener {
-                                            continuation.resume(Unit)
-                                        }
-                                        .addOnFailureListener { e ->
-                                            continuation.resumeWithException(e)
-                                        }
-                                }
+                                val newUser = User(id = user.uid, email = user.email.toString())
+                                firestore.collection("users").document(newUser.id).set(newUser)
+                                    .addOnSuccessListener {
+                                        continuation.resume(Unit)
+                                    }
+                                    .addOnFailureListener { e ->
+                                        continuation.resumeWithException(e)
+                                    }
+
 
                             }?.addOnFailureListener { e ->
                                 continuation.resumeWithException(e)
@@ -103,7 +90,8 @@ interface AuthRepository {
 
 
     fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.contains("@") && email.substringAfter("@").contains(".")
+        return Patterns.EMAIL_ADDRESS.matcher(email)
+            .matches() && email.contains("@") && email.substringAfter("@").contains(".")
     }
 
     fun isValidPassword(password: String): Boolean {

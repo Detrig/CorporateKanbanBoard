@@ -1,9 +1,13 @@
-package com.example.disputer.authentication.domain.utils
+package github.detrig.corporatekanbanboard.authentication.domain.utils
 
-import com.example.disputer.authentication.data.AuthUser
-import com.example.disputer.core.LiveDataWrapper
+import github.detrig.corporatekanbanboard.core.LiveDataWrapper
+import github.detrig.corporatekanbanboard.domain.model.User
 
-interface CurrentUserLiveDataWrapper : LiveDataWrapper.Mutable<AuthUser> {
+interface CurrentUserLiveDataWrapper : LiveDataWrapper.Mutable<User> {
 
-    class Base : CurrentUserLiveDataWrapper, LiveDataWrapper.Abstract<AuthUser>()
+    fun getUserId() : String?
+
+    class Base : CurrentUserLiveDataWrapper, LiveDataWrapper.Abstract<User>() {
+        override fun getUserId() = liveData.value?.id
+    }
 }

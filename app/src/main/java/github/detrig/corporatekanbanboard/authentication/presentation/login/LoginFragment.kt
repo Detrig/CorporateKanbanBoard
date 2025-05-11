@@ -1,13 +1,17 @@
-package com.example.disputer.authentication.presentation.login
+package github.detrig.corporatekanbanboard.authentication.presentation.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.disputer.authentication.presentation.main.MainActivity
-import com.example.disputer.core.AbstractFragment
-import com.example.disputer.core.ProvideViewModel
-import com.example.disputer.databinding.FragmentLoginBinding
+import androidx.core.view.isGone
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import github.detrig.corporatekanbanboard.R
+import github.detrig.corporatekanbanboard.core.AbstractFragment
+import github.detrig.corporatekanbanboard.core.ProvideViewModel
+import github.detrig.corporatekanbanboard.databinding.FragmentLoginBinding
+import github.detrig.corporatekanbanboard.main.MainActivity
 
 
 class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
