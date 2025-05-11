@@ -8,4 +8,6 @@
     <color name="light_green">#70C247</color>
     <color name="light_orange">#FFA844</color>
     <color name="light_red">#F94449</color>
+    <color name="drag_background">#334D8BF7</color>
+<!--    <color name="drag_background">#22888888</color>-->
 </resources>

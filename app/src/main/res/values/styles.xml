@@ -38,4 +38,8 @@
         <item name="backgroundTint">@color/gray</item>
         <item name="android:padding">8dp</item>
     </style>
+
+    <style name="SpinnerTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="android:padding">0dp</item>
+    </style>
 </resources>

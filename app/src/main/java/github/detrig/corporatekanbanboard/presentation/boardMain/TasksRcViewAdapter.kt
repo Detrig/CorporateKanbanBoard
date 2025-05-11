@@ -10,14 +10,26 @@ import github.detrig.corporatekanbanboard.databinding.RcViewTaskItemBinding
 import github.detrig.corporatekanbanboard.domain.model.Priority
 import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.model.TaskProgress
+import java.util.Collections
 
-class TasksRcViewAdapter(private val listener: OnTaskClickListener) :
-    RecyclerView.Adapter<TasksRcViewAdapter.ViewHolder>() {
+class TasksRcViewAdapter(
+    private val listener: OnTaskClickListener,
+    private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit
+) : RecyclerView.Adapter<TasksRcViewAdapter.ViewHolder>() {
 
-    val list: ArrayList<Task> = arrayListOf()
+    val tasksList: ArrayList<Task> = arrayListOf()
+    private var columnId: String = ""
+    private var draggedItemPosition = -1
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewTaskItemBinding.bind(view)
+
+        init {
+            itemView.setOnLongClickListener {
+                draggedItemPosition = adapterPosition
+                true
+            }
+        }
 
         fun bind(task: Task, listener: OnTaskClickListener) = with(binding) {
             taskTitleTV.text = task.title
@@ -57,13 +69,18 @@ class TasksRcViewAdapter(private val listener: OnTaskClickListener) :
     }
 
 
-    fun update(newList: ArrayList<Task>) {
-        val diffUtil = DiffUtilCallBack(list, newList)
-        val diff = DiffUtil.calculateDiff(diffUtil)
-
-        list.clear()
-        list.addAll(newList)
+    fun update(newTasks: List<Task>, columnId: String) {
+        this.columnId = columnId
+        val diff = DiffUtil.calculateDiff(DiffUtilCallBack(tasksList, newTasks))
+        tasksList.clear()
+        tasksList.addAll(newTasks)
         diff.dispatchUpdatesTo(this)
+    }
+
+    fun moveItem(fromPosition: Int, toPosition: Int) {
+        Collections.swap(tasksList, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        onTaskMoved(columnId, tasksList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -72,10 +89,10 @@ class TasksRcViewAdapter(private val listener: OnTaskClickListener) :
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = tasksList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], listener)
+        holder.bind(tasksList[position], listener)
     }
 
     class DiffUtilCallBack(
@@ -90,7 +107,7 @@ class TasksRcViewAdapter(private val listener: OnTaskClickListener) :
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem == newItem
+            return oldItem.id == newItem.id
 
         }
 
@@ -98,7 +115,7 @@ class TasksRcViewAdapter(private val listener: OnTaskClickListener) :
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem == newItem
+            return oldItem == newItem && oldItem.position == newItem.position
         }
 
     }

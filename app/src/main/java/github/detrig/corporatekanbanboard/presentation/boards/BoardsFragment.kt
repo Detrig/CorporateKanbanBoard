@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import github.detrig.corporatekanbanboard.core.AbstractFragment
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.databinding.FragmentBoardsBinding
@@ -32,20 +31,25 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
         }
 
         viewModel.observe(viewLifecycleOwner, { boardList ->
-            Log.d("alz04", "$boardList")
+            Log.d("alz04LiveData", "${boardList[0].columns[0].tasks}")
             boardsRcViewAdapter.update(ArrayList(boardList))
         })
 
         binding.addBoardButton.setOnClickListener {
-            Log.d("alz04", "addBoardButton clicked")
             viewModel.addBoardScreen()
         }
     }
 
+//    override fun onStart() {
+//        super.onStart()
+//        viewModel.getBoards()
+//    }
+
     private fun initRcView() {
         boardsRcViewAdapter = BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
             override fun onClick(board: Board) {
-                Toast.makeText(requireContext(), board.title, Toast.LENGTH_SHORT).show()
+                Log.d("alz04LiveData", "clicked board: ${board.columns[0].tasks}")
+                viewModel.clickedBoardScreen(board)
             }
         })
         binding.boardsRcView.adapter = boardsRcViewAdapter

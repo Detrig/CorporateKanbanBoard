@@ -14,6 +14,7 @@ import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardScreen
+import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class BoardsViewModel(
     private val navigation: Navigation,
     private val boardsCommunication: Communication<List<Board>>,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
+    private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
     private val boardsRepository: BoardsRepository,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
@@ -44,13 +46,20 @@ class BoardsViewModel(
             when (boardsResult) {
                 is Result.Success -> {
                     boardsCommunication.setData(boardsResult.data)
-                    _savedBoards.value = boardsResult.data
+                    _savedBoards.postValue(boardsResult.data)
                 }
 
                 is Result.Error -> _error.postValue(boardsResult.message)
             }
         }
     }
+
+    fun clickedBoardScreen(board: Board) {
+        clickedBoardLiveDataWrapper.update(board)
+        navigation.update(BoardMainScreen)
+    }
+
+    fun clickedBoardLiveData() = clickedBoardLiveDataWrapper.liveData()
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<Board>>) =
         boardsCommunication.observe(owner, observer)

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import github.detrig.corporatekanbanboard.core.AbstractFragment
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
-import github.detrig.corporatekanbanboard.data.local.model.BoardEntity
 import github.detrig.corporatekanbanboard.databinding.FragmentAddBoardBinding
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.model.Column
@@ -41,6 +40,7 @@ class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
             columns = columnsRcViewAdapter.list
         )
         viewModel.addBoard(newBoard)
+        viewModel.boardsScreen()
     }
 
     private fun initRcView() {
@@ -62,7 +62,7 @@ class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
         ))
 
         binding.addColumnButton.setOnClickListener {
-            columnsRcViewAdapter.addItem(Column(""))
+            columnsRcViewAdapter.addItem(Column.newInstance(""))
         }
     }
 }

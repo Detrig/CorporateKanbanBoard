@@ -5,10 +5,12 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.domain.repository.boards.LocalBoardsDataSource
 import github.detrig.corporatekanbanboard.domain.repository.boards.RemoteBoardsDataSource
 import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserDataSource
+import java.util.UUID
 
 class BoardsRepositoryImpl(
     private val localBoard: LocalBoardsDataSource,
@@ -47,6 +49,55 @@ class BoardsRepositoryImpl(
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error("Failed to update board: ${e.message}")
+        }
+    }
+
+    override suspend fun updateTaskInBoard(
+        userId: String,
+        board: Board,
+        columnId: String,
+        updatedTask: Task
+    ): Result<Board> {
+        return try {
+            // 1. Валидация входящих данных
+            if (columnId.isBlank()) {
+                throw IllegalArgumentException("Column ID cannot be empty")
+            }
+
+            // 2. Обновляем структуру данных
+            val updatedColumns = board.columns.map { column ->
+                if (column.id == columnId) {
+                    // Для новой задачи (без ID или с пустым ID) генерируем новый ID
+                    val taskToAdd = if (updatedTask.id.isBlank()) {
+                        updatedTask.copy(id = UUID.randomUUID().toString())
+                    } else {
+                        updatedTask
+                    }
+
+                    // Фильтруем существующие задачи (удаляем если есть дубликат по ID)
+                    val filteredTasks = column.tasks.filterNot { it.id == taskToAdd.id }
+
+                    // Добавляем новую/обновленную задачу в начало списка
+                    val updatedTasks = listOf(taskToAdd) + filteredTasks
+
+                    column.copy(tasks = updatedTasks)
+                } else {
+                    column
+                }
+            }
+
+            // 3. Создаем обновленный Board
+            val updatedBoard = board.copy(columns = updatedColumns)
+
+            // 4. Сохраняем в базу данных
+            Log.d("DB_UPDATE", "Updating board with ${updatedBoard.columns.find { it.id == columnId }?.tasks?.size} tasks in column $columnId")
+            updateBoardRemote(userId, updatedBoard).let {
+                Log.d("DB_UPDATE", "Update successful for board ${updatedBoard.id}")
+                Result.Success(updatedBoard)
+            }
+        } catch (e: Exception) {
+            Log.e("DB_UPDATE", "Error updating board", e)
+            Result.Error("Failed to update task: ${e.message}")
         }
     }
 

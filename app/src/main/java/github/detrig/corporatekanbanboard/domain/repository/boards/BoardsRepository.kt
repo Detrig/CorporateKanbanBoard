@@ -2,6 +2,7 @@ package github.detrig.corporatekanbanboard.domain.repository.boards
 
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.core.Result
+import github.detrig.corporatekanbanboard.domain.model.Task
 
 interface BoardsRepository {
 
@@ -21,6 +22,13 @@ interface BoardsRepository {
      * Обновляет онлайн доску.
      */
     suspend fun updateBoardRemote(userId: String, board: Board): Result<Unit>
+
+    suspend fun updateTaskInBoard(
+        userId: String,
+        board: Board,
+        columnId: String,
+        updatedTask: Task
+    ): Result<Board>
 
     /**
      * Удаляет доску пользователя.

@@ -4,18 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
+import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.User
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
+import github.detrig.corporatekanbanboard.presentation.boards.BoardsScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddBoardViewModel(
+    private val navigation: Navigation,
     private val boardsRepository: BoardsRepository,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
@@ -40,5 +43,9 @@ class AddBoardViewModel(
                 is Result.Error -> _error.postValue(result.message)
             }
         }
+    }
+
+    fun boardsScreen() {
+        navigation.update(BoardsScreen)
     }
 }

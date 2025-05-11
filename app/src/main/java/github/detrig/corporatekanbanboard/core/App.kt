@@ -45,4 +45,7 @@ class App : Application(), ProvideViewModel {
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =
         factory.viewModel(viewModelClass)
 
+    companion object {
+        var currentUserId: String = ""
+    }
 }
