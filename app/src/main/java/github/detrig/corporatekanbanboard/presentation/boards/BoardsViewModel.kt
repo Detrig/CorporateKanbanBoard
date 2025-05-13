@@ -14,6 +14,7 @@ import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardScreen
+import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,21 +22,24 @@ import kotlinx.coroutines.launch
 
 class BoardsViewModel(
     private val navigation: Navigation,
-    private val boardsCommunication: Communication<List<Board>>,
+    private val boardsCommunication: Communication<Board>,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
+    private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
     private val boardsRepository: BoardsRepository,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
-    /**
-     * КОД ХУЙНИ НО ВРЕМЕНИ НЕТ(
-     */
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
     private val _savedBoards = MutableLiveData<List<Board>>()
     val savedBoard: LiveData<List<Board>> = _savedBoards
+
+//    init {
+//        getBoards()
+//    }
 
     fun getBoards() {
         viewModelScope.launch(dispatcherIo) {
@@ -44,13 +48,21 @@ class BoardsViewModel(
             when (boardsResult) {
                 is Result.Success -> {
                     boardsCommunication.setData(boardsResult.data)
-                    _savedBoards.value = boardsResult.data
+                    Log.d("lfc", "getBoards and update boardCummunication: ${boardsResult.data.size}")
+                    _savedBoards.postValue(boardsResult.data)
                 }
 
                 is Result.Error -> _error.postValue(boardsResult.message)
             }
         }
     }
+
+    fun clickedBoardScreen(board: Board) {
+        clickedBoardLiveDataWrapper.update(board)
+        navigation.update(BoardMainScreen)
+    }
+
+    fun clickedBoardLiveData() = clickedBoardLiveDataWrapper.liveData()
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<Board>>) =
         boardsCommunication.observe(owner, observer)

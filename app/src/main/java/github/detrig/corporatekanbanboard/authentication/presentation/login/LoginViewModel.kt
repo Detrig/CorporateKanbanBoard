@@ -6,6 +6,7 @@ import github.detrig.corporatekanbanboard.authentication.domain.usecase.LoginUse
 import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
 import github.detrig.corporatekanbanboard.authentication.presentation.forgotpassword.ForgotPasswordScreen
 import github.detrig.corporatekanbanboard.authentication.presentation.register.RegisterScreen
+import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsScreen
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Resource
@@ -42,6 +43,7 @@ class LoginViewModel(
                     when (val userResource = getCurrentUserRoleUseCase()) {
                         is Resource.Success -> {
                             currentUserLiveDataWrapper.update(userResource.data!!)
+                            App.currentUserId = userResource.data.id
                             navigation.update(BoardsScreen)
                         }
 

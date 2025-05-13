@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import github.detrig.corporatekanbanboard.core.AbstractFragment
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.databinding.FragmentBoardsBinding
@@ -24,30 +23,37 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as ProvideViewModel).viewModel(BoardsViewModel::class.java)
 
-        initRcView()
         viewModel.getBoards()
+        initRcView()
+
 
         viewModel.savedBoard.value?.let {
             boardsRcViewAdapter.update(ArrayList(it))
         }
 
         viewModel.observe(viewLifecycleOwner, { boardList ->
-            Log.d("alz04", "$boardList")
+            Log.d("lfc", "board updated: ${boardList.size}")
             boardsRcViewAdapter.update(ArrayList(boardList))
         })
-
+        Log.d("lfc", "BoardMainFragment onViewCreated board: ${viewModel.savedBoard.value}")
         binding.addBoardButton.setOnClickListener {
-            Log.d("alz04", "addBoardButton clicked")
             viewModel.addBoardScreen()
         }
     }
 
+//    override fun onStart() {
+//        super.onStart()
+//        viewModel.getBoards()
+//    }
+
     private fun initRcView() {
-        boardsRcViewAdapter = BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
-            override fun onClick(board: Board) {
-                Toast.makeText(requireContext(), board.title, Toast.LENGTH_SHORT).show()
-            }
-        })
+        boardsRcViewAdapter =
+            BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
+                override fun onClick(board: Board) {
+                    Log.d("alz04LiveData", "clicked board: ${board.columns[0].tasks}")
+                    viewModel.clickedBoardScreen(board)
+                }
+            })
         binding.boardsRcView.adapter = boardsRcViewAdapter
     }
 }

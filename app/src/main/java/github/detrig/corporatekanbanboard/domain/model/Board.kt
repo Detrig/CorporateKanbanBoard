@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import github.detrig.corporatekanbanboard.data.local.model.BoardEntity
 
 data class Board(
-    val id: String = "",
+    var id: String = "",
     val title: String = "",
     val description: String = "",
     val creatorEmail: String = "",

@@ -33,6 +33,11 @@ import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsViewModel
 import github.detrig.corporatekanbanboard.main.MainViewModel
 import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardViewModel
+import github.detrig.corporatekanbanboard.presentation.addtask.AddTaskViewModel
+import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainViewModel
+import github.detrig.corporatekanbanboard.presentation.boardMain.ClickedTaskLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -74,7 +79,8 @@ interface ProvideViewModel {
         private val forgotPasswordUseCase = ForgotPasswordUseCase(passwordRepository)
 
         //CurrentUser
-        private val currentUserDataSource = FirebaseCurrentDataSource(fireBaseAuth, fireBaseFirestore)
+        private val currentUserDataSource =
+            FirebaseCurrentDataSource(fireBaseAuth, fireBaseFirestore)
         private val currentUserRepository = CurrentUserRepositoryImpl(currentUserDataSource)
         private val currentUserLiveDataWrapper = CurrentUserLiveDataWrapper.Base()
         private val getCurrentUserRoleUseCase = GetCurrentUserRoleUseCase(currentUserRepository)
@@ -84,10 +90,18 @@ interface ProvideViewModel {
 
         //Boards
         //private val boardsLocalRepo
-        private val boardsCommunication = BaseCommunication<List<Board>>()
+        private val boardsCommunication = BaseCommunication<Board>()
         private val localBoardDataSource = LocalBoardsDataSourceImpl(appDatabase.boardsDao())
         private val remoteBoardDataSource = RemoteBoardsDataSourceImpl(fireBaseFirestore)
-        private val boardsRepository = BoardsRepositoryImpl(localBoardDataSource, remoteBoardDataSource, userDataSource)
+        private val boardsRepository =
+            BoardsRepositoryImpl(localBoardDataSource, remoteBoardDataSource, userDataSource)
+        private val clickedBoardLiveDataWrapper = ClickedBoardLiveDataWrapper.Base()
+
+        //Tasks
+        private val clickedTaskLiveDataWrapper = ClickedTaskLiveDataWrapper.Base()
+
+        //Column
+        private val columnToAddLiveDataWrapper = ColumnToAddLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -127,15 +141,36 @@ interface ProvideViewModel {
                     navigation,
                     boardsCommunication,
                     currentUserLiveDataWrapper,
+                    clickedBoardLiveDataWrapper,
                     boardsRepository,
                     viewModelScope
                 )
 
                 AddBoardViewModel::class.java -> AddBoardViewModel(
+                    navigation,
                     boardsRepository,
+                    boardsCommunication,
                     currentUserLiveDataWrapper,
                     viewModelScope
                 )
+
+                BoardMainViewModel::class.java -> BoardMainViewModel(
+                    navigation,
+                    boardsRepository,
+                    clickedBoardLiveDataWrapper,
+                    clickedTaskLiveDataWrapper,
+                    columnToAddLiveDataWrapper,
+                    viewModelScope
+                )
+
+                AddTaskViewModel::class.java -> AddTaskViewModel(
+                    navigation,
+                    boardsRepository,
+                    clickedBoardLiveDataWrapper,
+                    columnToAddLiveDataWrapper,
+                    viewModelScope
+                )
+
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
         }

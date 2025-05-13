@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingStart="8dp"
+    android:paddingEnd="0dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -22,11 +25,10 @@
         android:id="@+id/columnsRcView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
-        android:paddingTop="?attr/actionBarSize"
-        android:paddingBottom="72dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/boardTitleTextView" />
