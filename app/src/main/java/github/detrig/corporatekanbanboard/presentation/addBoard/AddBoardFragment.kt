@@ -55,10 +55,10 @@ class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
         }
 
         columnsRcViewAdapter.update(arrayListOf(
-            Column(title = "To-do"),
-            Column(title = "Do today"),
-            Column(title = "In progress"),
-            Column(title = "Done")
+            Column.newInstance("To-do"),
+            Column.newInstance("Do today"),
+            Column.newInstance("In progress"),
+            Column.newInstance("Done"),
         ))
 
         binding.addColumnButton.setOnClickListener {

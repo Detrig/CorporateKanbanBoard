@@ -23,18 +23,19 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as ProvideViewModel).viewModel(BoardsViewModel::class.java)
 
-        initRcView()
         viewModel.getBoards()
+        initRcView()
+
 
         viewModel.savedBoard.value?.let {
             boardsRcViewAdapter.update(ArrayList(it))
         }
 
         viewModel.observe(viewLifecycleOwner, { boardList ->
-            Log.d("alz04LiveData", "${boardList[0].columns[0].tasks}")
+            Log.d("lfc", "board updated: ${boardList.size}")
             boardsRcViewAdapter.update(ArrayList(boardList))
         })
-
+        Log.d("lfc", "BoardMainFragment onViewCreated board: ${viewModel.savedBoard.value}")
         binding.addBoardButton.setOnClickListener {
             viewModel.addBoardScreen()
         }
@@ -46,12 +47,13 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
 //    }
 
     private fun initRcView() {
-        boardsRcViewAdapter = BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
-            override fun onClick(board: Board) {
-                Log.d("alz04LiveData", "clicked board: ${board.columns[0].tasks}")
-                viewModel.clickedBoardScreen(board)
-            }
-        })
+        boardsRcViewAdapter =
+            BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
+                override fun onClick(board: Board) {
+                    Log.d("alz04LiveData", "clicked board: ${board.columns[0].tasks}")
+                    viewModel.clickedBoardScreen(board)
+                }
+            })
         binding.boardsRcView.adapter = boardsRcViewAdapter
     }
 }

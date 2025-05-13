@@ -90,7 +90,7 @@ interface ProvideViewModel {
 
         //Boards
         //private val boardsLocalRepo
-        private val boardsCommunication = BaseCommunication<List<Board>>()
+        private val boardsCommunication = BaseCommunication<Board>()
         private val localBoardDataSource = LocalBoardsDataSourceImpl(appDatabase.boardsDao())
         private val remoteBoardDataSource = RemoteBoardsDataSourceImpl(fireBaseFirestore)
         private val boardsRepository =
@@ -149,6 +149,7 @@ interface ProvideViewModel {
                 AddBoardViewModel::class.java -> AddBoardViewModel(
                     navigation,
                     boardsRepository,
+                    boardsCommunication,
                     currentUserLiveDataWrapper,
                     viewModelScope
                 )

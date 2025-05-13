@@ -1,7 +1,5 @@
 package github.detrig.corporatekanbanboard.data.remote.boards
 
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
@@ -25,7 +23,8 @@ class BoardsRepositoryImpl(
             localBoard.insertBoards(remoteBoards)
             Result.Success(remoteBoards)
         } catch (e: Exception) {
-            getCachedBoards(userId)
+            //getCachedBoards(userId)
+            Result.Error("Failed to get boards: ${e.message}")
         }
     }
 
@@ -34,8 +33,10 @@ class BoardsRepositoryImpl(
         return try {
             val id = remoteBoard.addBoard(board)
             usersDataSource.addBoardToUser(userId, id)
+            Log.d("lfc", "board added success: $id")
             Result.Success(id)
         } catch (e: Exception) {
+            Log.d("lfc", "Failed to add board: ${e.message}")
             Result.Error("Failed to add board: ${e.message}")
         }
     }

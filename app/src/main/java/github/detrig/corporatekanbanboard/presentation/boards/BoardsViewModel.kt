@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class BoardsViewModel(
     private val navigation: Navigation,
-    private val boardsCommunication: Communication<List<Board>>,
+    private val boardsCommunication: Communication<Board>,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
     private val boardsRepository: BoardsRepository,
@@ -30,14 +30,16 @@ class BoardsViewModel(
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
-    /**
-     * КОД ХУЙНИ НО ВРЕМЕНИ НЕТ(
-     */
+
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
     private val _savedBoards = MutableLiveData<List<Board>>()
     val savedBoard: LiveData<List<Board>> = _savedBoards
+
+//    init {
+//        getBoards()
+//    }
 
     fun getBoards() {
         viewModelScope.launch(dispatcherIo) {
@@ -46,6 +48,7 @@ class BoardsViewModel(
             when (boardsResult) {
                 is Result.Success -> {
                     boardsCommunication.setData(boardsResult.data)
+                    Log.d("lfc", "getBoards and update boardCummunication: ${boardsResult.data.size}")
                     _savedBoards.postValue(boardsResult.data)
                 }
 

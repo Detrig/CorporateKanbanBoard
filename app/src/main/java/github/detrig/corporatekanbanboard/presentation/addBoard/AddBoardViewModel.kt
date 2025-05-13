@@ -1,9 +1,11 @@
 package github.detrig.corporatekanbanboard.presentation.addBoard
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
+import github.detrig.corporatekanbanboard.core.Communication
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 class AddBoardViewModel(
     private val navigation: Navigation,
     private val boardsRepository: BoardsRepository,
+    private val boardsCommunication: Communication<Board>,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
@@ -38,9 +41,17 @@ class AddBoardViewModel(
                 )
             )
             val result = boardsRepository.addBoardRemote(user.id, fullBoard)
+            Log.d("lfc", "board add result: $result")
             when (result) {
-                is Result.Success -> {}
-                is Result.Error -> _error.postValue(result.message)
+                is Result.Success -> {
+                    boardsCommunication.add(board)
+                    Log.d("lfc", "board added succcesfully: ${result.data}")
+                }
+
+                is Result.Error -> {
+                    _error.postValue(result.message)
+                    Log.d("lfc", "board not added: ${result.message}")
+                }
             }
         }
     }

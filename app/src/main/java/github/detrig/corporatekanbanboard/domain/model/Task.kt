@@ -18,5 +18,5 @@ enum class TaskProgress {
 }
 
 enum class Priority {
-    EMERGENCY, MEDIUM_EMERGENCY, LOW_EMERGENCY
+    HIGH_EMERGENCY, MEDIUM_EMERGENCY, LOW_EMERGENCY
 }

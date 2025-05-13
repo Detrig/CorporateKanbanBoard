@@ -1,5 +1,6 @@
 package github.detrig.corporatekanbanboard.data.remote.boards
 
+import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import github.detrig.corporatekanbanboard.domain.model.Board
@@ -26,6 +27,8 @@ class RemoteBoardsDataSourceImpl(
 
     override suspend fun addBoard(board: Board): String {
         val docRef = firestore.collection(BOARDS_KEY).document() // генерирует новый ID
+        board.id = docRef.id
+//        Log.d("lfc", "board to add: $board")
         docRef.set(board).await()
         return docRef.id
     }

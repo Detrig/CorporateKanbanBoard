@@ -46,7 +46,7 @@ class TasksRcViewAdapter(
                             R.color.light_orange
                         )
 
-                        Priority.EMERGENCY -> taskContainer.setBackgroundResource(
+                        Priority.HIGH_EMERGENCY -> taskContainer.setBackgroundResource(
                             R.color.light_red
                         )
                     }
