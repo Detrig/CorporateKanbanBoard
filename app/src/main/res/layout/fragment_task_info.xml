@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/white"
     android:padding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,15 +16,26 @@
 
         <TextView
             android:id="@+id/taskTitle"
-            android:layout_width="0dp"
             style="@style/BoldTextViewStyle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Заголовок задачи"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textSize="28sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            android:maxLines="3"
+            app:layout_constraintEnd_toStartOf="@+id/deleteTaskButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Заголовок задачи Заголовок задачи Заголовок задачи Заголовок задачи" />
+
+        <ImageButton
+            android:id="@+id/deleteTaskButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/trash"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Описание -->
         <TextView
@@ -31,6 +43,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            style="@style/NormalTextViewStyle"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/taskTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -43,7 +57,7 @@
             android:layout_marginTop="8dp"
             android:text="Создатель: "
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/taskDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -55,7 +69,7 @@
             android:layout_height="wrap_content"
             android:text="Дата создания: "
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/taskCreator"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +83,7 @@
             android:layout_marginTop="8dp"
             android:text="Статус: "
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/taskDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -81,7 +95,7 @@
             android:layout_height="wrap_content"
             android:text="Приоритет: "
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/taskProgress"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,15 +108,15 @@
             android:layout_height="wrap_content"
             android:text="Фото:"
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/taskPriority"
             app:layout_constraintStart_toStartOf="parent" />
 
         <!-- Фото (горизонтальный контейнер) -->
-        <LinearLayout
-            android:id="@+id/photoContainer"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photoRcView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -119,16 +133,19 @@
             android:text="Комментарии:"
             android:textStyle="bold"
             style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/photoContainer"
+            app:layout_constraintTop_toBottomOf="@id/photoRcView"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commentsRecyclerView"
             android:layout_width="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/commentsLabel"
             app:layout_constraintStart_toStartOf="parent"

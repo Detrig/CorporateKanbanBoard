@@ -102,6 +102,39 @@ class BoardsRepositoryImpl(
         }
     }
 
+    override suspend fun deleteTask(
+        userId: String,
+        board: Board,
+        columnId: String,
+        taskId: String
+    ): Result<Board> {
+        return try {
+            if (columnId.isBlank()) {
+                throw IllegalArgumentException("Column ID cannot be empty")
+            }
+            if (taskId.isBlank()) {
+                throw IllegalArgumentException("Task ID cannot be empty")
+            }
+
+            val updatedColumns = board.columns.map { column ->
+                if (column.id == columnId) {
+                    val updatedTasks = column.tasks.filterNot { it.id == taskId }
+                    column.copy(tasks = updatedTasks)
+                } else {
+                    column
+                }
+            }
+
+            val updatedBoard = board.copy(columns = updatedColumns)
+
+            updateBoardRemote(userId, updatedBoard).let {
+                Result.Success(updatedBoard)
+            }
+        } catch (e: Exception) {
+            Result.Error("Failed to delete task: ${e.message}")
+        }
+    }
+
     override suspend fun deleteBoardRemote(
         userId: String,
         boardId: String

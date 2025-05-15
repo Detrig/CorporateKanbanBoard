@@ -50,7 +50,6 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
         boardsRcViewAdapter =
             BoardsRcViewAdapter(object : BoardsRcViewAdapter.OnBoardClickListener {
                 override fun onClick(board: Board) {
-                    Log.d("alz04LiveData", "clicked board: ${board.columns[0].tasks}")
                     viewModel.clickedBoardScreen(board)
                 }
             })

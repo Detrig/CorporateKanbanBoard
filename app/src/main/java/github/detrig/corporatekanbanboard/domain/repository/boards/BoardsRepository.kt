@@ -30,6 +30,12 @@ interface BoardsRepository {
         updatedTask: Task
     ): Result<Board>
 
+    suspend fun deleteTask(
+        userId: String,
+        board: Board,
+        columnId: String,
+        taskId: String
+    ) : Result<Board>
     /**
      * Удаляет доску пользователя.
      */

@@ -28,10 +28,10 @@ class BoardMainViewModel(
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    fun updateTasks(columnId: String, newTasks: Map<String, String>) {
+    fun updateTasks(columnId: String, tasks: List<Task>) {
         val currentBoard = currentBoard().value ?: Board()
         val updatedColumns = currentBoard.columns.map { column ->
-            if (column.id == columnId) column.copy(taskIds = newTasks)
+            if (column.id == columnId) column.copy(tasks = tasks)
             else column
         }
         clickedBoardLiveDataWrapper.update(currentBoard.copy(columns = updatedColumns))
@@ -41,6 +41,7 @@ class BoardMainViewModel(
     }
 
     fun clickedTaskScreen(task: Task) {
+        clickedTaskLiveDataWrapper.update(task)
         navigation.update(TaskInfoScreen)
     }
 

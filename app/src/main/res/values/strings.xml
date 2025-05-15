@@ -19,4 +19,11 @@
         <item name="fontFamily">@font/onest_bold</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <string-array name="board_access_roles">
+        <item>Админ</item>
+        <item>Лидер</item>
+        <item>Работник</item>
+        <item>Наблюдатель</item>
+    </string-array>
 </resources>

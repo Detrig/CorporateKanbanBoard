@@ -30,60 +30,60 @@ class ColumnWithTasksRcViewAdapter(
         init {
             binding.columnRcView.apply {
                 adapter = tasksRcViewAdapter
-                setupDragAndDrop()
+                //setupDragAndDrop()
             }
         }
 
-        private fun RecyclerView.setupDragAndDrop() {
-            val touchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-                override fun getMovementFlags(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder
-                ): Int {
-                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-                    return makeMovementFlags(dragFlags, 0)
-                }
-
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    val fromPosition = viewHolder.adapterPosition
-                    val toPosition = target.adapterPosition
-                    (adapter as? TasksRcViewAdapter)?.moveItem(fromPosition, toPosition)
-                    tasksList =
-                    return true
-                }
-
-                override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-                    super.onSelectedChanged(viewHolder, actionState)
-                    when (actionState) {
-                        ItemTouchHelper.ACTION_STATE_DRAG -> {
-                            viewHolder?.itemView?.alpha = 0.7f
-                            viewHolder?.itemView?.setBackgroundColor(
-                                ContextCompat.getColor(context, R.color.drag_background)
-                            )
-                        }
-                    }
-                }
-
-                override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-                    super.clearView(recyclerView, viewHolder)
-                    viewHolder.itemView.alpha = 1.0f
-                    viewHolder.itemView.background = null
-                }
-
-                override fun isLongPressDragEnabled(): Boolean = true
-
-                override fun onSwiped(
-                    viewHolder: RecyclerView.ViewHolder,
-                    direction: Int
-                ) {
-                }
-            })
-            touchHelper.attachToRecyclerView(this)
-        }
+//        private fun RecyclerView.setupDragAndDrop() {
+//            val touchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+//                override fun getMovementFlags(
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder
+//                ): Int {
+//                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+//                    return makeMovementFlags(dragFlags, 0)
+//                }
+//
+//                override fun onMove(
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    target: RecyclerView.ViewHolder
+//                ): Boolean {
+//                    val fromPosition = viewHolder.adapterPosition
+//                    val toPosition = target.adapterPosition
+//                    (adapter as? TasksRcViewAdapter)?.moveItem(fromPosition, toPosition)
+//                    tasksList =
+//                    return true
+//                }
+//
+//                override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+//                    super.onSelectedChanged(viewHolder, actionState)
+//                    when (actionState) {
+//                        ItemTouchHelper.ACTION_STATE_DRAG -> {
+//                            viewHolder?.itemView?.alpha = 0.7f
+//                            viewHolder?.itemView?.setBackgroundColor(
+//                                ContextCompat.getColor(context, R.color.drag_background)
+//                            )
+//                        }
+//                    }
+//                }
+//
+//                override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+//                    super.clearView(recyclerView, viewHolder)
+//                    viewHolder.itemView.alpha = 1.0f
+//                    viewHolder.itemView.background = null
+//                }
+//
+//                override fun isLongPressDragEnabled(): Boolean = true
+//
+//                override fun onSwiped(
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    direction: Int
+//                ) {
+//                }
+//            })
+//            touchHelper.attachToRecyclerView(this)
+//        }
 
         fun bind(column: Column) = with(binding) {
             columnsTitle.text = column.title

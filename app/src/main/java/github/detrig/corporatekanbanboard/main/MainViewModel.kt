@@ -1,9 +1,11 @@
 package github.detrig.corporatekanbanboard.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.authentication.domain.usecase.GetCurrentUserRoleUseCase
 import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
 import github.detrig.corporatekanbanboard.authentication.presentation.login.LoginScreen
+import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsScreen
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Resource
@@ -44,6 +46,9 @@ class MainViewModel(
             withContext(dispatcherMain) {
                 if (result is Resource.Success) {
                     currentUserLiveDataWrapper.update(result.data!!)
+                    App.currentUserId = result.data.id
+                    App.currentUserEmail = result.data.email
+                    App.currentUserName = result.data.name
                     onSuccess()
                 } else {
                     navigation.update(LoginScreen)

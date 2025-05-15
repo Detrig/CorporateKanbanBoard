@@ -17,6 +17,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class AddTaskViewModel(
     private val navigation: Navigation,
@@ -34,15 +36,27 @@ class AddTaskViewModel(
         val column = currentColumn().value ?: Column()
         val board = clickedBoardLiveDataWrapper.liveData().value ?: Board()
         Log.d("alz04", "boardTitle: ${board.title}, columnId: ${column.id}, task: $task")
+        val sdf = SimpleDateFormat("dd/M/yyyy")
+        val currentDate = sdf.format(Date())
         viewModelScope.launch(dispatcherIo) {
             val result =
-                boardsRepository.updateTaskInBoard(App.currentUserId, board, column.id, task)
+                boardsRepository.updateTaskInBoard(
+                    App.currentUserId,
+                    board,
+                    column.id,
+                    task.copy(
+                        columnId = column.id,
+                        creator = App.currentUserEmail, //todo replace with user name
+                        dateCreated = currentDate
+                    )
+                )
             withContext(dispatcherMain) {
                 when (result) {
                     is Result.Success -> {
                         clickedBoardLiveDataWrapper.update(result.data)
                         navigation.update(Screen.Pop)
                     }
+
                     is Result.Error -> Log.d("alz04", "error while adding task ${task.title}")
                 }
             }

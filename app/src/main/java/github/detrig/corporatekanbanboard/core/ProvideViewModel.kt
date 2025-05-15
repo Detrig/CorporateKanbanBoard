@@ -38,6 +38,7 @@ import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainViewMo
 import github.detrig.corporatekanbanboard.presentation.boardMain.ClickedTaskLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.taskInfo.TaskInfoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -171,6 +172,13 @@ interface ProvideViewModel {
                     viewModelScope
                 )
 
+                TaskInfoViewModel::class.java -> TaskInfoViewModel(
+                    navigation,
+                    boardsRepository,
+                    clickedBoardLiveDataWrapper,
+                    clickedTaskLiveDataWrapper,
+                    viewModelScope
+                )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
         }

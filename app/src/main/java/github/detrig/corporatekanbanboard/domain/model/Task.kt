@@ -9,7 +9,8 @@ data class Task(
     val taskProgress: TaskProgress = TaskProgress.IN_WORK,
     val priority: Priority = Priority.LOW_EMERGENCY,
     val photosBase64: List<String> = emptyList(),
-    val comments: List<Comment> = emptyList(),
+    val comments: ArrayList<Comment> = arrayListOf(),
+    val columnId: String = "",
     val position: Int = 0
 )
 

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Название доски -->
+        <TextView
+            android:id="@+id/boardNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Название доски"
+            android:fontFamily="@font/onest_medium"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/boardNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Введите название доски"
+            android:fontFamily="@font/onest_medium"
+            android:inputType="text"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/boardNameLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <!-- Добавление столбца -->
+        <TextView
+            android:id="@+id/addColumnLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить столбец"
+            android:fontFamily="@font/onest_medium"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/boardNameEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <EditText
+            android:id="@+id/columnNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Название столбца"
+            android:inputType="text"
+            android:fontFamily="@font/onest_medium"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/addColumnLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/allColumnsHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Все столбцы: "
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/onest_medium"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/columnNameEditText" />
+
+        <TextView
+            android:id="@+id/allColumnNamesListTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/onest_medium"
+            app:layout_constraintEnd_toEndOf="@+id/columnNameEditText"
+            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/allColumnsHeader" />
+
+        <Button
+            android:id="@+id/addColumnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/brown"
+            android:fontFamily="@font/onest_medium"
+            android:layout_marginTop="8dp"
+            android:text="Добавить"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/allColumnNamesListTV" />
+
+        <!-- Добавление участника -->
+        <TextView
+            android:id="@+id/addMemberLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить участника"
+            android:fontFamily="@font/onest_medium"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/addColumnButton"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Email участника"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:fontFamily="@font/onest_medium"
+            app:layout_constraintTop_toBottomOf="@id/addMemberLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <Spinner
+            android:id="@+id/accessSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/board_access_roles"
+            app:layout_constraintTop_toBottomOf="@id/emailEditText"
+            android:fontFamily="@font/onest_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/addMemberButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить участника"
+            android:fontFamily="@font/onest_medium"
+            android:backgroundTint="@color/brown"
+            app:layout_constraintTop_toBottomOf="@id/accessSpinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <!-- Список участников -->
+        <TextView
+            android:id="@+id/membersLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/onest_medium"
+            android:text="Участники доски"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/addMemberButton"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/membersRcView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/membersLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/rc_view_member_item" />
+
+        <!-- Сохранить изменения -->
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/onest_medium"
+            android:text="Сохранить"
+            android:backgroundTint="@color/brown"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/membersRcView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

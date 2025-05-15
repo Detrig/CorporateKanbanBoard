@@ -61,7 +61,6 @@ class TasksRcViewAdapter(
                 }
             }
 
-
             itemView.setOnClickListener {
                 listener.onClick(task)
             }
