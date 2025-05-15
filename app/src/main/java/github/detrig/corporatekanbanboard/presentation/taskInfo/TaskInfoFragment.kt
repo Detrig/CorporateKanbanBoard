@@ -44,7 +44,6 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         }
 
         viewModel.currentTaskLiveData().observe(viewLifecycleOwner) {
-            Log.d("alz04", "task updated: $it")
             photosRcViewAdapter.update(ArrayList(it.photosBase64))
             commentsRcViewAdapter.update(it.comments)
         }

@@ -1,13 +1,15 @@
 package github.detrig.corporatekanbanboard.data.remote.user
 
+import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserDataSource
+import github.detrig.corporatekanbanboard.domain.model.User
+import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserBoardDataSource
 import kotlinx.coroutines.tasks.await
 
-class RemoteUserDataSourceImpl(
+class RemoteUserBoardDataSourceImpl(
     private val firestore: FirebaseFirestore
-) : RemoteUserDataSource {
+) : RemoteUserBoardDataSource {
 
     override suspend fun addBoardToUser(userId: String, boardId: String) {
         firestore.collection(USERS_KEY)
@@ -21,6 +23,22 @@ class RemoteUserDataSourceImpl(
             .document(userId)
             .update("boardIds", FieldValue.arrayRemove(boardId))
             .await()
+    }
+
+    override suspend fun getUserByEmail(email: String): User? {
+        return try {
+            val querySnapshot = firestore.collection(USERS_KEY)
+                .whereEqualTo("email", email)
+                .limit(1)
+                .get()
+                .await()
+
+            val document = querySnapshot.documents.firstOrNull()
+            document?.toObject(User::class.java)
+        } catch (e: Exception) {
+            Log.e("FIRESTORE", "Error getting user by email", e)
+            null
+        }
     }
 
     companion object {

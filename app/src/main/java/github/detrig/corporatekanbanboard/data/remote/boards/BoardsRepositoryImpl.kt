@@ -7,13 +7,13 @@ import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.domain.repository.boards.LocalBoardsDataSource
 import github.detrig.corporatekanbanboard.domain.repository.boards.RemoteBoardsDataSource
-import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserDataSource
+import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserBoardDataSource
 import java.util.UUID
 
 class BoardsRepositoryImpl(
     private val localBoard: LocalBoardsDataSource,
     private val remoteBoard: RemoteBoardsDataSource,
-    private val usersDataSource: RemoteUserDataSource,
+    private val usersDataSource: RemoteUserBoardDataSource,
 ) : BoardsRepository {
 
 
@@ -33,10 +33,8 @@ class BoardsRepositoryImpl(
         return try {
             val id = remoteBoard.addBoard(board)
             usersDataSource.addBoardToUser(userId, id)
-            Log.d("lfc", "board added success: $id")
             Result.Success(id)
         } catch (e: Exception) {
-            Log.d("lfc", "Failed to add board: ${e.message}")
             Result.Error("Failed to add board: ${e.message}")
         }
     }

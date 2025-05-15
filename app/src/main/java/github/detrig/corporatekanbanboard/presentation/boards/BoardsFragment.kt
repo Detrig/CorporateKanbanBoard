@@ -9,6 +9,7 @@ import github.detrig.corporatekanbanboard.core.AbstractFragment
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.databinding.FragmentBoardsBinding
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.main.MainActivity
 
 class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
 
@@ -21,21 +22,21 @@ class BoardsFragment : AbstractFragment<FragmentBoardsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).showHeaderBottomNav()
+
         viewModel = (activity as ProvideViewModel).viewModel(BoardsViewModel::class.java)
 
         viewModel.getBoards()
         initRcView()
-
 
         viewModel.savedBoard.value?.let {
             boardsRcViewAdapter.update(ArrayList(it))
         }
 
         viewModel.observe(viewLifecycleOwner, { boardList ->
-            Log.d("lfc", "board updated: ${boardList.size}")
             boardsRcViewAdapter.update(ArrayList(boardList))
         })
-        Log.d("lfc", "BoardMainFragment onViewCreated board: ${viewModel.savedBoard.value}")
+
         binding.addBoardButton.setOnClickListener {
             viewModel.addBoardScreen()
         }

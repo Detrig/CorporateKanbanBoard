@@ -10,12 +10,13 @@ import com.bumptech.glide.request.RequestOptions
 import github.detrig.corporatekanbanboard.R
 import github.detrig.corporatekanbanboard.core.ImageUtils
 import github.detrig.corporatekanbanboard.databinding.RcViewMemberItemBinding
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
 
 class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
     RecyclerView.Adapter<MembersRcViewAdapter.ViewHolder>() {
 
-    val list: ArrayList<BoardMember> = arrayListOf()
+    val list: MutableSet<BoardMember> = mutableSetOf()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewMemberItemBinding.bind(view)
@@ -24,7 +25,15 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
 
             memberNameTextView.text = member.user.name
             memberEmailTextView.text = member.user.email
-
+            when (member.access) {
+                BoardAccess.ADMIN -> {
+                    deleteMemberButton.visibility = View.GONE
+                    memberRoleTextView.text = "Роль: Админ"
+                }
+                BoardAccess.LEADER -> memberRoleTextView.text = "Роль: Лидер"
+                BoardAccess.WORKER -> memberRoleTextView.text = "Роль: Работник"
+                BoardAccess.VIEWER -> memberRoleTextView.text = "Роль: Наблюдатель"
+            }
 
             val bitmap = ImageUtils.base64ToBitmap(member.user.avatarBase64)
 
@@ -41,11 +50,15 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
             itemView.setOnClickListener {
                 listener.onClick(member)
             }
+
+            deleteMemberButton.setOnClickListener {
+                listener.deleteMemberClickListener(member)
+            }
         }
     }
 
     fun update(newList: ArrayList<BoardMember>) {
-        val diffUtil = DiffUtilCallBack(list, newList)
+        val diffUtil = DiffUtilCallBack(list.toList(), newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
 
         list.clear()
@@ -62,7 +75,7 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], listener)
+        holder.bind(list.toList()[position], listener)
     }
 
     class DiffUtilCallBack(
@@ -92,5 +105,6 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
 
     interface OnMemberClickListener {
         fun onClick(member: BoardMember)
+        fun deleteMemberClickListener(member: BoardMember)
     }
 }

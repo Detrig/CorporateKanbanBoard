@@ -48,7 +48,7 @@ class BoardsViewModel(
             when (boardsResult) {
                 is Result.Success -> {
                     boardsCommunication.setData(boardsResult.data)
-                    Log.d("lfc", "getBoards and update boardCummunication: ${boardsResult.data.size}")
+
                     _savedBoards.postValue(boardsResult.data)
                 }
 

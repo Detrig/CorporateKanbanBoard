@@ -21,9 +21,9 @@
     </style>
 
     <string-array name="board_access_roles">
-        <item>Админ</item>
-        <item>Лидер</item>
-        <item>Работник</item>
         <item>Наблюдатель</item>
+        <item>Работник</item>
+        <item>Лидер</item>
+        <item>Админ</item>
     </string-array>
 </resources>

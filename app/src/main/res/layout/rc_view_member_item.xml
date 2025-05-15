@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="12dp"
     android:background="?attr/selectableItemBackground"
     android:layout_marginBottom="8dp">
@@ -10,42 +11,69 @@
     <!-- Аватар -->
     <ImageView
         android:id="@+id/memberAvatarImageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/circle_background"
         android:scaleType="centerCrop"
         android:src="@drawable/user"
-        android:background="@drawable/circle_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Имя -->
     <TextView
         android:id="@+id/memberNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/onest_bold"
         android:text="Иван Иванов"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:fontFamily="@font/onest_bold"
+        android:layout_marginEnd="4dp"
         app:layout_constraintStart_toEndOf="@id/memberAvatarImageView"
         app:layout_constraintTop_toTopOf="@id/memberAvatarImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="12dp" />
+        app:layout_constraintEnd_toStartOf="@id/deleteMemberButton" />
 
     <!-- Email -->
     <TextView
         android:id="@+id/memberEmailTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="example@email.com"
-        android:textSize="14sp"
-        android:textColor="#888888"
         android:fontFamily="@font/onest_regular"
+        android:text="example@email.com"
+        android:textColor="#888888"
+        android:textSize="14sp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintTop_toBottomOf="@id/memberNameTextView"
         app:layout_constraintStart_toStartOf="@id/memberNameTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/memberAvatarImageView" />
+        app:layout_constraintEnd_toEndOf="@id/memberNameTextView" />
+
+    <!-- Роль -->
+    <TextView
+        android:id="@+id/memberRoleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/onest_medium"
+        tools:text="Роль: WORKER"
+        android:textColor="#666666"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toBottomOf="@id/memberEmailTextView"
+        app:layout_constraintStart_toStartOf="@id/memberEmailTextView"
+        app:layout_constraintEnd_toEndOf="@id/memberEmailTextView" />
+
+    <!-- Кнопка удаления -->
+    <ImageButton
+        android:id="@+id/deleteMemberButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/trash"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

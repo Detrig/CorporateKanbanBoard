@@ -23,7 +23,6 @@ class CommentsRcViewAdapter(private val listener : OnCommentClickListener) : Rec
             binding.dateTextView.text = comment.dateCreated
             binding.authorNameTextView.text = comment.authorName
 
-            Log.d("rcView", "comment from bind: $comment")
             itemView.setOnClickListener {
                 listener.onClick(comment)
             }

@@ -8,4 +8,8 @@
         android:id="@+id/profile"
         android:icon="@drawable/user"
         android:title="Профиль" />
+    <item
+        android:id="@+id/globalChat"
+        android:icon="@drawable/message"
+        android:title="Чат" />
 </menu>

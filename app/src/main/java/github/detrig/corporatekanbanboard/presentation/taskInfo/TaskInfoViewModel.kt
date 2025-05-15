@@ -34,6 +34,13 @@ class TaskInfoViewModel(
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
+    fun acceptCompletedTask() {
+        if (App.currentUserId == currentTask().authorId) {
+            val updatedTask = currentTask().copy(taskProgress = TaskProgress.DONE)
+            updateTask(updatedTask)
+        }
+    }
+
     fun addComment(comment: Comment) {
         viewModelScope.launch(dispatcherIo) {
             val updatedComments = currentTask().comments.plus(
@@ -46,24 +53,27 @@ class TaskInfoViewModel(
                 )
             )
             val updatedTask = currentTask().copy(comments = ArrayList(updatedComments))
-            val result = boardsRepository.updateTaskInBoard(
-                App.currentUserId,
-                clickedBoardLiveDataWrapper.liveData().value ?: Board(),
-                currentTask().columnId,
-                updatedTask
-            )
-            when (result) {
-                is Result.Success -> {
-                    withContext(dispatcherMain) {
-                        clickedBoardLiveDataWrapper.update(result.data)
-                        clickedTaskLiveDataWrapper.update(updatedTask)
-                    }
-                }
+            updateTask(updatedTask)
+        }
+    }
 
-                is Result.Error -> {
-                    _message.postValue("На данный момент добавление комментариев недоступно")
-                    Log.d("alz04", "addComment error: ${result.message}")
+    private fun updateTask(task: Task) {
+        val result = boardsRepository.updateTaskInBoard(
+            App.currentUserId,
+            clickedBoardLiveDataWrapper.liveData().value ?: Board(),
+            currentTask().columnId,
+            task
+        )
+        when (result) {
+            is Result.Success -> {
+                withContext(dispatcherMain) {
+                    clickedBoardLiveDataWrapper.update(result.data)
+                    clickedTaskLiveDataWrapper.update(task)
                 }
+            }
+
+            is Result.Error -> {
+                _message.postValue("На данный момент добавление комментариев недоступно")
             }
         }
     }

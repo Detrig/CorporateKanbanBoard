@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.boards -> viewModel.boardsScreen()
+                //R.id.globalChat -> viewModel.globalChatScreen()
                // R.id.profile -> viewModel.infoScreen()
             }
             true

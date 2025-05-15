@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddBoardViewModel(
     private val navigation: Navigation,
@@ -41,16 +42,16 @@ class AddBoardViewModel(
                 )
             )
             val result = boardsRepository.addBoardRemote(user.id, fullBoard)
-            Log.d("lfc", "board add result: $result")
             when (result) {
                 is Result.Success -> {
                     boardsCommunication.add(board)
-                    Log.d("lfc", "board added succcesfully: ${result.data}")
+                    withContext(dispatcherMain) {
+                        navigation.update(BoardsScreen)
+                    }
                 }
 
                 is Result.Error -> {
                     _error.postValue(result.message)
-                    Log.d("lfc", "board not added: ${result.message}")
                 }
             }
         }

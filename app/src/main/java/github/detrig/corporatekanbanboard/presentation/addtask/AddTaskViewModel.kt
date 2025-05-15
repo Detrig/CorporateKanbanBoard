@@ -35,7 +35,6 @@ class AddTaskViewModel(
     fun addTasks(task: Task) {
         val column = currentColumn().value ?: Column()
         val board = clickedBoardLiveDataWrapper.liveData().value ?: Board()
-        Log.d("alz04", "boardTitle: ${board.title}, columnId: ${column.id}, task: $task")
         val sdf = SimpleDateFormat("dd/M/yyyy")
         val currentDate = sdf.format(Date())
         viewModelScope.launch(dispatcherIo) {

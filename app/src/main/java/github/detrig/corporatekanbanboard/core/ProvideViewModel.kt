@@ -28,7 +28,8 @@ import github.detrig.corporatekanbanboard.data.local.database.AppDatabase
 import github.detrig.corporatekanbanboard.data.local.datasource.LocalBoardsDataSourceImpl
 import github.detrig.corporatekanbanboard.data.remote.boards.BoardsRepositoryImpl
 import github.detrig.corporatekanbanboard.data.remote.boards.RemoteBoardsDataSourceImpl
-import github.detrig.corporatekanbanboard.data.remote.user.RemoteUserDataSourceImpl
+import github.detrig.corporatekanbanboard.data.remote.user.RemoteUserBoardDataSourceImpl
+import github.detrig.corporatekanbanboard.data.remote.user.UserBoardRepositoryImpl
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsViewModel
 import github.detrig.corporatekanbanboard.main.MainViewModel
@@ -37,6 +38,7 @@ import github.detrig.corporatekanbanboard.presentation.addtask.AddTaskViewModel
 import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainViewModel
 import github.detrig.corporatekanbanboard.presentation.boardMain.ClickedTaskLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boardSettings.BoardSettingsViewModel
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.taskInfo.TaskInfoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -87,7 +89,8 @@ interface ProvideViewModel {
         private val getCurrentUserRoleUseCase = GetCurrentUserRoleUseCase(currentUserRepository)
 
         //User
-        private val userDataSource = RemoteUserDataSourceImpl(fireBaseFirestore)
+        private val userBoardDataSource = RemoteUserBoardDataSourceImpl(fireBaseFirestore)
+        private val userBoardRepository = UserBoardRepositoryImpl(userBoardDataSource)
 
         //Boards
         //private val boardsLocalRepo
@@ -95,7 +98,7 @@ interface ProvideViewModel {
         private val localBoardDataSource = LocalBoardsDataSourceImpl(appDatabase.boardsDao())
         private val remoteBoardDataSource = RemoteBoardsDataSourceImpl(fireBaseFirestore)
         private val boardsRepository =
-            BoardsRepositoryImpl(localBoardDataSource, remoteBoardDataSource, userDataSource)
+            BoardsRepositoryImpl(localBoardDataSource, remoteBoardDataSource, userBoardDataSource)
         private val clickedBoardLiveDataWrapper = ClickedBoardLiveDataWrapper.Base()
 
         //Tasks
@@ -177,6 +180,14 @@ interface ProvideViewModel {
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
                     clickedTaskLiveDataWrapper,
+                    viewModelScope
+                )
+
+                BoardSettingsViewModel::class.java -> BoardSettingsViewModel(
+                    navigation,
+                    boardsRepository,
+                    userBoardRepository,
+                    clickedBoardLiveDataWrapper,
                     viewModelScope
                 )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")

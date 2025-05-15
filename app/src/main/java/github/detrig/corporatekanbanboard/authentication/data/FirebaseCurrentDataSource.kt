@@ -23,7 +23,6 @@ class FirebaseCurrentDataSource(
                 .await()
             if (document.exists()) {
                 document.toObject(User::class.java)?.let { user ->
-                    Log.d("repo", "current user: $user")
                     Resource.Success(user.copy(id = document.id))
                 } ?: Resource.Error("Failed to parse user data")
             } else {

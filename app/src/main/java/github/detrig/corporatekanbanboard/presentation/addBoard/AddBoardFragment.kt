@@ -40,7 +40,6 @@ class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
             columns = columnsRcViewAdapter.list
         )
         viewModel.addBoard(newBoard)
-        viewModel.boardsScreen()
     }
 
     private fun initRcView() {

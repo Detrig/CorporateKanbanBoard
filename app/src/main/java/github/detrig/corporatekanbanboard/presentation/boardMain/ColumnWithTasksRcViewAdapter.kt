@@ -9,17 +9,19 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import github.detrig.corporatekanbanboard.R
 import github.detrig.corporatekanbanboard.databinding.RcViewColumnPresentationItemBinding
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Column
 import github.detrig.corporatekanbanboard.domain.model.Task
 
 class ColumnWithTasksRcViewAdapter(
     private val addTaskButtonClickListener: OnAddTaskButtonClickListener,
     private val taskClickListener: TasksRcViewAdapter.OnTaskClickListener,
-    private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit
+    private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit,
+    private val currentUserRole: BoardAccess
 ) : RecyclerView.Adapter<ColumnWithTasksRcViewAdapter.ViewHolder>() {
 
     val columnsList: ArrayList<Column> = arrayListOf()
-    var tasksList: ArrayList<Task> = arrayListOf()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewColumnPresentationItemBinding.bind(view)
@@ -89,6 +91,10 @@ class ColumnWithTasksRcViewAdapter(
             columnsTitle.text = column.title
             tasksRcViewAdapter.update(column.tasks, column.id)
 
+            when (currentUserRole) {
+                BoardAccess.VIEWER -> binding.addTaskButton.visibility = View.GONE
+                else -> binding.addTaskButton.visibility = View.VISIBLE
+            }
             binding.addTaskButton.setOnClickListener {
                 addTaskButtonClickListener.clickAddTaskButton(column)
             }
