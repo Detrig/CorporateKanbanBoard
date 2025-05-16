@@ -77,8 +77,7 @@ class BoardsRepositoryImpl(
                     val filteredTasks = column.tasks.filterNot { it.id == taskToAdd.id }
 
                     // Добавляем новую/обновленную задачу в начало списка
-                    val updatedTasks = listOf(taskToAdd) + filteredTasks
-
+                    val updatedTasks = Task.sortedByCustomRules(listOf(taskToAdd) + filteredTasks)
                     column.copy(tasks = updatedTasks)
                 } else {
                     column

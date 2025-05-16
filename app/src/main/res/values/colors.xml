@@ -11,7 +11,7 @@
     <color name="drag_background">#334D8BF7</color>
     <color name="i_green">#adc178</color>
     <color name="i_light_green">#adc178</color>
-    <color name="i_giga_light_green">#adc178</color>
+    <color name="i_giga_light_green">#e8fccf</color>
     <color name="brown">#6c584c</color>
 <!--    <color name="drag_background">#22888888</color>-->
 </resources>

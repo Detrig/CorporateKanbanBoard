@@ -102,7 +102,8 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
         binding.addMemberButton.setOnClickListener {
             val email = binding.emailEditText.text
             if (email.isNotBlank()) {
-                Toast.makeText(requireContext(), "Идет проверка пользователя", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Идет проверка пользователя", Toast.LENGTH_SHORT)
+                    .show()
                 viewModel.isUserExistByEmail(email.toString())
                 if (viewModel.isUserExistLiveData.value?.second != null) {
                     val access = when (binding.accessSpinner.selectedItem.toString()) {
@@ -114,12 +115,24 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
                             BoardAccess.VIEWER
                         }
                     }
-                    newMembersList.add(
-                        BoardMember(
-                            viewModel.isUserExistLiveData.value?.second ?: User(), access
-                        )
+                    val newBoardMember = BoardMember(
+                        viewModel.isUserExistLiveData.value?.second ?: User(), access
                     )
-                    membersRcViewAdapter.update(ArrayList(newMembersList))
+
+                    var isMemberAlreadyAdded = false
+                    membersRcViewAdapter.list.forEach { if (it.user.id == newBoardMember.user.id) {
+                        isMemberAlreadyAdded = true
+                    }
+                    }
+
+                    if (!isMemberAlreadyAdded) {
+                        newMembersList.add(
+                            newBoardMember
+                        )
+                        membersRcViewAdapter.update(ArrayList(newMembersList))
+                    } else {
+                        Toast.makeText(requireContext(), "Данный пользователь уже добавлен", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 Toast.makeText(

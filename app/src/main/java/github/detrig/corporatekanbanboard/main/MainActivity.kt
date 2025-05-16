@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.R
 import github.detrig.corporatekanbanboard.databinding.ActivityMainBinding
+import github.detrig.corporatekanbanboard.presentation.globalchat.GlobalChatScreen
 
 class MainActivity : AppCompatActivity(), ProvideViewModel {
 
@@ -37,8 +38,8 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.boards -> viewModel.boardsScreen()
-                //R.id.globalChat -> viewModel.globalChatScreen()
-               // R.id.profile -> viewModel.infoScreen()
+                R.id.globalChat -> viewModel.globalChatScreen()
+                R.id.profile -> viewModel.profileEditScreen()
             }
             true
         }

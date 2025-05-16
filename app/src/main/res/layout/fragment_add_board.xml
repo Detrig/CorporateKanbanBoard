@@ -101,6 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
+                android:backgroundTint="@color/brown"
                 android:text="Создать"
                 app:layout_constraintEnd_toEndOf="@+id/boardDescriptionEditText"
                 app:layout_constraintStart_toStartOf="@+id/boardDescriptionEditText"

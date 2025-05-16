@@ -18,6 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.core.Screen
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
+import github.detrig.corporatekanbanboard.domain.model.Priority
+import github.detrig.corporatekanbanboard.domain.model.TaskProgress
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -35,9 +38,11 @@ class TaskInfoViewModel(
     val message: LiveData<String> = _message
 
     fun acceptCompletedTask() {
-        if (App.currentUserId == currentTask().authorId) {
+        if (App.currentUserId == currentTask().creator) {
             val updatedTask = currentTask().copy(taskProgress = TaskProgress.DONE)
-            updateTask(updatedTask)
+            viewModelScope.launch(dispatcherIo) {
+                updateTask(updatedTask)
+            }
         }
     }
 
@@ -57,7 +62,7 @@ class TaskInfoViewModel(
         }
     }
 
-    private fun updateTask(task: Task) {
+    private suspend fun updateTask(task: Task) {
         val result = boardsRepository.updateTaskInBoard(
             App.currentUserId,
             clickedBoardLiveDataWrapper.liveData().value ?: Board(),
@@ -69,12 +74,19 @@ class TaskInfoViewModel(
                 withContext(dispatcherMain) {
                     clickedBoardLiveDataWrapper.update(result.data)
                     clickedTaskLiveDataWrapper.update(task)
+                    navigation.update(Screen.Pop)
                 }
             }
 
             is Result.Error -> {
                 _message.postValue("На данный момент добавление комментариев недоступно")
             }
+        }
+    }
+
+    fun updateTaskUniversal(task: Task) {
+        viewModelScope.launch(dispatcherIo) {
+            updateTask(task)
         }
     }
 
@@ -101,7 +113,16 @@ class TaskInfoViewModel(
         }
     }
 
-    private fun currentTask() = currentTaskLiveData().value ?: Task()
+    fun getUserRoleForCurrentBoard() : BoardAccess {
+        var userRoleForCurrentBoard = BoardAccess.VIEWER
+        clickedBoardLiveDataWrapper.liveData().value?.members?.forEach {
+            if (it.user.id == App.currentUserId)
+                userRoleForCurrentBoard = it.access
+        }
+        return userRoleForCurrentBoard
+    }
+
+    fun currentTask() = currentTaskLiveData().value ?: Task()
 
     fun currentTaskLiveData() = clickedTaskLiveDataWrapper.liveData()
 }

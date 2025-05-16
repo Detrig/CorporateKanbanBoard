@@ -9,4 +9,8 @@ class CurrentUserRepositoryImpl(
 ) : CurrentUserRepository {
     override suspend fun getCurrentUser(): Resource<User> =
         currentUserDataSource.getCurrentUser()
+
+    override suspend fun updateCurrentUser(user: User): Resource<Unit> =
+        currentUserDataSource.updateCurrentUser(user)
+
 }

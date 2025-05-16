@@ -77,14 +77,14 @@
             android:id="@+id/allColumnsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/onest_medium"
-            android:text="Все столбцы: "
-            android:textSize="14sp"
             android:padding="8dp"
+            android:text="Все столбцы: "
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
-            app:layout_constraintTop_toBottomOf="@+id/columnNameEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/addColumnButton" />
 
         <!--        <TextView-->
         <!--            android:id="@+id/allColumnNamesListTV"-->
@@ -111,12 +111,12 @@
             android:id="@+id/addColumnButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:backgroundTint="@color/brown"
             android:fontFamily="@font/onest_medium"
             android:text="Добавить"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/allColumnsRcView" />
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/columnNameEditText" />
 
         <!-- Добавление участника -->
         <TextView
@@ -130,7 +130,7 @@
             android:textStyle="bold"
             android:padding="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addColumnButton" />
+            app:layout_constraintTop_toBottomOf="@id/allColumnsRcView" />
 
         <EditText
             android:id="@+id/emailEditText"

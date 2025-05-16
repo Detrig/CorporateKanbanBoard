@@ -9,6 +9,8 @@ import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsScreen
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Resource
+import github.detrig.corporatekanbanboard.presentation.globalchat.GlobalChatScreen
+import github.detrig.corporatekanbanboard.presentation.profile.ProfileEditScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +33,14 @@ class MainViewModel(
 
     fun boardsScreen() {
         navigation.update(BoardsScreen)
+    }
+
+    fun globalChatScreen() {
+        navigation.update(GlobalChatScreen)
+    }
+
+    fun profileEditScreen() {
+        navigation.update(ProfileEditScreen)
     }
 
     fun navigationLiveData() = navigation.liveData()
