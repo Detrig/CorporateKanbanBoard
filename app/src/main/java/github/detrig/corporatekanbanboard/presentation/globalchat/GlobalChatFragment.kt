@@ -97,17 +97,24 @@ class GlobalChatFragment : AbstractFragment<FragmentGlobalChatBinding>() {
     private fun setupInputControls() {
         binding.sendButton.setOnClickListener {
             val text = binding.messageEditText.text.toString().trim()
+
             if (text.isEmpty()) return@setOnClickListener
 
-            val message = GlobalChatMessage(
-                id = "",
-                senderId = App.currentUserId,
-                senderName = App.currentUserName,
-                text = text,
-                imageBase64 = "",
-                timestamp = System.currentTimeMillis()
-            )
-            viewModel.sendMessage(message)
+            val maxLength = 300
+            val parts = text.chunked(maxLength)
+
+            for (part in parts) {
+                val message = GlobalChatMessage(
+                    id = "",
+                    senderId = App.currentUserId,
+                    senderName = App.currentUserName,
+                    text = part,
+                    imageBase64 = "",
+                    timestamp = System.currentTimeMillis()
+                )
+                viewModel.sendMessage(message)
+            }
+
             binding.messageEditText.text?.clear()
         }
 

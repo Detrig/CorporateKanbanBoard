@@ -74,7 +74,7 @@ class TaskInfoViewModel(
                 withContext(dispatcherMain) {
                     clickedBoardLiveDataWrapper.update(result.data)
                     clickedTaskLiveDataWrapper.update(task)
-                    navigation.update(Screen.Pop)
+                    //navigation.update(Screen.Pop)
                 }
             }
 

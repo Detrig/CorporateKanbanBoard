@@ -39,15 +39,19 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as ProvideViewModel).viewModel(TaskInfoViewModel::class.java)
 
-        pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                val base64 = ImageUtils.uriToBase64(requireContext(), it)
-                val updatePhotoList = viewModel.currentTask().photosBase64.toMutableList().apply {
-                    add(base64)
+        pickImageLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                uri?.let {
+                    val base64 = ImageUtils.uriToBase64(requireContext(), it)
+                    val updatePhotoList =
+                        viewModel.currentTask().photosBase64.toMutableList().apply {
+                            add(base64)
+                        }
+                    viewModel.updateTaskUniversal(
+                        task = viewModel.currentTask().copy(photosBase64 = updatePhotoList)
+                    )
                 }
-                viewModel.updateTaskUniversal(task = viewModel.currentTask().copy(photosBase64 = updatePhotoList))
             }
-        }
 
         initRcView()
 
@@ -68,12 +72,22 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
     private fun addComment() {
         val sdf = SimpleDateFormat("dd/M/yyyy")
         val currentDate = sdf.format(Date())
-        if (binding.commentEditText.text.isNotBlank()) {
-            val comment = Comment(
-                content = binding.commentEditText.text.toString(),
-                dateCreated = currentDate
-            )
-            viewModel.addComment(comment)
+        val commentText = binding.commentEditText.text
+        if (commentText.isNotBlank()) {
+            if (commentText.length <= 200) {
+                val comment = Comment(
+                    content = commentText.toString(),
+                    dateCreated = currentDate
+                )
+                viewModel.addComment(comment)
+                binding.commentEditText.setText("")
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Максимальная длина комментария - 200 симмволов",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             Toast.makeText(
                 requireContext(),
@@ -81,7 +95,6 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-        binding.commentEditText.setText("")
     }
 
     private fun initViews(task: Task) = with(binding) {

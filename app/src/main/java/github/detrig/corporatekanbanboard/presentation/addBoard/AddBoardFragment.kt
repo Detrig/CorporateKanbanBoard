@@ -10,6 +10,8 @@ import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.databinding.FragmentAddBoardBinding
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.model.Column
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
 
@@ -34,10 +36,13 @@ class AddBoardFragment : AbstractFragment<FragmentAddBoardBinding>() {
     }
 
     private fun addBoard() {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val currentDate = sdf.format(Date())
         val newBoard = Board(
             title = binding.boardNameEditText.text.toString(),
             description = binding.boardDescriptionEditText.text.toString(),
-            columns = columnsRcViewAdapter.list
+            columns = columnsRcViewAdapter.list,
+            dateCreated = currentDate
         )
         viewModel.addBoard(newBoard)
     }
