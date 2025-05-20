@@ -22,7 +22,8 @@ class BoardsRcViewAdapter(private val listener: OnBoardClickListener) :
         fun bind(board: Board, listener: OnBoardClickListener) = with(binding) {
             boardTitle.text = board.title
             boardCreator.text = "${binding.boardCreator.text}${board.creatorEmail}"
-            binding.boardDateCreated.text = board.dateCreated
+            boardDescription.text = board.description
+            boardDateCreated.text = board.dateCreated
             if (board.photoBase64.isNotEmpty()) {
                 val bitmap = ImageUtils.base64ToBitmap(board.photoBase64)
                 if (bitmap != null) {

@@ -47,9 +47,8 @@ class BoardsViewModel(
                 boardsRepository.getBoardsForUser(currentUserLiveDataWrapper.getUserId() ?: "")
             when (boardsResult) {
                 is Result.Success -> {
-                    boardsCommunication.setData(boardsResult.data)
-
                     _savedBoards.postValue(boardsResult.data)
+                    boardsCommunication.setData(boardsResult.data)
                 }
 
                 is Result.Error -> _error.postValue(boardsResult.message)

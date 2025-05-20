@@ -2,6 +2,7 @@ package github.detrig.corporatekanbanboard.domain.repository.boards
 
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.core.Result
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Task
 
 interface BoardsRepository {
@@ -51,6 +52,7 @@ interface BoardsRepository {
      */
     suspend fun removeUserFromBoardRemote(boardId: String, userId: String): Result<Unit>
 
+    suspend fun getMembersForBoard(boardId: String) : Result<List<BoardMember>>
 
     // ===== LOCAL (Room cache) OPERATIONS =====
 

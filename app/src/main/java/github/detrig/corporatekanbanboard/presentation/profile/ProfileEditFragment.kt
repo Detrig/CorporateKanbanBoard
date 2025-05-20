@@ -71,8 +71,12 @@ class ProfileEditFragment : AbstractFragment<FragmentEditProfileBinding>() {
                 return@setOnClickListener
             }
 
-            viewModel.updateProfile(name, avatar)
-            Toast.makeText(requireContext(), "Профиль обновлён", Toast.LENGTH_SHORT).show()
+            if (name.length <= 100) {
+                viewModel.updateProfile(name, avatar)
+                Toast.makeText(requireContext(), "Профиль обновлён", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Максимальная длина имени 100 символов", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.logoutButton.setOnClickListener {

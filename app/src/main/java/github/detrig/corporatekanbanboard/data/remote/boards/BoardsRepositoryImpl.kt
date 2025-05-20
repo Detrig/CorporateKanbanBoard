@@ -3,6 +3,7 @@ package github.detrig.corporatekanbanboard.data.remote.boards
 import android.util.Log
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.domain.repository.boards.LocalBoardsDataSource
@@ -168,6 +169,15 @@ class BoardsRepositoryImpl(
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error("Failed to remove user from board: ${e.message}")
+        }
+    }
+
+    override suspend fun getMembersForBoard(boardId: String): Result<List<BoardMember>> {
+        return try {
+            val members = remoteBoard.getMembersForBoard(boardId)
+            Result.Success(members)
+        } catch(e: Exception) {
+            Result.Error("Failed to get members for board: ${e.message}")
         }
     }
 

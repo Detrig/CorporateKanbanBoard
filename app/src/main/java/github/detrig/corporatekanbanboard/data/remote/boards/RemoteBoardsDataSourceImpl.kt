@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.repository.boards.RemoteBoardsDataSource
 import kotlinx.coroutines.tasks.await
 
@@ -59,6 +60,16 @@ class RemoteBoardsDataSourceImpl(
             .document(boardId)
             .update("userIds", FieldValue.arrayRemove(userId))
             .await()
+    }
+
+    override suspend fun getMembersForBoard(boardId: String): List<BoardMember> {
+        val boardSnapshot = firestore.collection(BOARDS_KEY)
+            .document(boardId)
+            .get()
+            .await()
+
+        val members = boardSnapshot.toObject(Board::class.java)?.members ?: emptyList()
+        return members
     }
 
     companion object {

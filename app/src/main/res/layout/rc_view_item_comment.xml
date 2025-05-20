@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="8dp"
-    android:padding="12dp"
-    android:background="@drawable/border">
+    android:layout_marginBottom="4dp"
+    android:background="@color/white"
+    android:padding="12dp">
 
     <!-- Имя автора -->
     <TextView
@@ -19,7 +19,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:fontFamily="@font/onest_bold"
-        android:textColor="@android:color/black"
+        android:textColor="@color/primary"
         tools:text="Иван Иванов"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

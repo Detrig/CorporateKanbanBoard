@@ -21,12 +21,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/boardsHeaderTV" />
+        app:layout_constraintTop_toBottomOf="@id/boardsHeaderTV"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addBoardButton"
@@ -35,7 +35,7 @@
         android:contentDescription="Добавить"
         android:layout_margin="16dp"
         android:tint="@null"
-        app:backgroundTint="@color/brown"
+        app:backgroundTint="@color/primary"
         app:srcCompat="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -5,6 +5,7 @@ data class Task(
     val title: String = "",
     val description: String = "",
     val creator: String = "",
+    val workers: List<BoardMember> = emptyList(),
     val dateCreated: String = "",
     val taskProgress: TaskProgress = TaskProgress.IN_WORK,
     val priority: Priority = Priority.LOW_EMERGENCY,

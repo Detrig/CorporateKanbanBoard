@@ -13,5 +13,8 @@
     <color name="i_light_green">#adc178</color>
     <color name="i_giga_light_green">#e8fccf</color>
     <color name="brown">#6c584c</color>
+    <color name="primary">#3F51B5</color> <!-- Indigo -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#FF9800</color> <!-- Orange -->
 <!--    <color name="drag_background">#22888888</color>-->
 </resources>

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import github.detrig.corporatekanbanboard.authentication.domain.utils.CurrentUserLiveDataWrapper
 import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.domain.model.Board
@@ -21,6 +22,7 @@ import github.detrig.corporatekanbanboard.core.Screen
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.Priority
 import github.detrig.corporatekanbanboard.domain.model.TaskProgress
+import github.detrig.corporatekanbanboard.domain.model.User
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -29,6 +31,7 @@ class TaskInfoViewModel(
     private val boardsRepository: BoardsRepository,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
     private val clickedTaskLiveDataWrapper: ClickedTaskLiveDataWrapper,
+    private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
@@ -36,6 +39,10 @@ class TaskInfoViewModel(
 
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
+
+    fun currentUser() = currentUserLiveDataWrapper.liveData().value ?: User()
+
+    fun currentBoard() = clickedBoardLiveDataWrapper.liveData().value ?: Board()
 
     fun acceptCompletedTask() {
         if (App.currentUserId == currentTask().creator) {
@@ -74,6 +81,7 @@ class TaskInfoViewModel(
                 withContext(dispatcherMain) {
                     clickedBoardLiveDataWrapper.update(result.data)
                     clickedTaskLiveDataWrapper.update(task)
+                    Log.d("alz-04", "board updated with workers: ${result.data.columns[0].tasks[0].workers.map { it.user.email }}")
                     //navigation.update(Screen.Pop)
                 }
             }

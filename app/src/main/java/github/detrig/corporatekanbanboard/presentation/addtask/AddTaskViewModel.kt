@@ -7,6 +7,7 @@ import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.core.Screen
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Column
 import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
@@ -24,6 +25,7 @@ class AddTaskViewModel(
     private val navigation: Navigation,
     private val boardsRepository: BoardsRepository,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
+    private val workersLiveDataWrapper : WorkersLiveDataWrapper,
     private val columnToAddLiveDataWrapper: ColumnToAddLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
@@ -61,4 +63,12 @@ class AddTaskViewModel(
             }
         }
     }
+
+//    fun getWorkers() {
+//        viewModelScope.launch(dispatcherIo) {
+//            val members = boardsRepository.getMembersForBoard(getCurrentBoard().id)
+//        }
+//    }
+
+    fun getCurrentBoard() = clickedBoardLiveDataWrapper.liveData().value ?: Board()
 }

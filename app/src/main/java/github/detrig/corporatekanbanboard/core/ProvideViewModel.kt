@@ -36,6 +36,7 @@ import github.detrig.corporatekanbanboard.presentation.boards.BoardsViewModel
 import github.detrig.corporatekanbanboard.main.MainViewModel
 import github.detrig.corporatekanbanboard.presentation.addBoard.AddBoardViewModel
 import github.detrig.corporatekanbanboard.presentation.addtask.AddTaskViewModel
+import github.detrig.corporatekanbanboard.presentation.addtask.WorkersLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boardMain.BoardMainViewModel
 import github.detrig.corporatekanbanboard.presentation.boardMain.ClickedTaskLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
@@ -114,6 +115,8 @@ interface ProvideViewModel {
         //Chat
         private val chatRepository = ChatRepositoryImpl(firebaseDatabase)
 
+        //Workers
+        private val workersLiveDataWrapper = WorkersLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -179,6 +182,7 @@ interface ProvideViewModel {
                     navigation,
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
+                    workersLiveDataWrapper,
                     columnToAddLiveDataWrapper,
                     viewModelScope
                 )
@@ -188,6 +192,7 @@ interface ProvideViewModel {
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
                     clickedTaskLiveDataWrapper,
+                    currentUserLiveDataWrapper,
                     viewModelScope
                 )
 

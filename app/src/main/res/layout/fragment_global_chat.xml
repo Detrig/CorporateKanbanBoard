@@ -36,7 +36,7 @@
         android:orientation="horizontal"
         android:padding="8dp"
         android:background="?attr/colorSurface"
-        android:backgroundTint="@color/i_giga_light_green"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

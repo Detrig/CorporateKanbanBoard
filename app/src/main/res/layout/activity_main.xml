@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainUiContainer"
         android:visibility="visible"
-        android:background="@color/light_gray"
+        android:background="#9fa8da"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -41,7 +41,8 @@
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
+            android:background="@color/white"
+            app:compatShadowEnabled="true"
             app:labelVisibilityMode="labeled"
             app:itemTextColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
