@@ -60,6 +60,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
                         viewModel.currentTask().photosBase64.toMutableList().apply {
                             add(base64)
                         }
+                    Log.d("alz-04", "imagePicker updatePhotoList: ${updatePhotoList.size}")
                     viewModel.updateTaskUniversal(
                         task = viewModel.currentTask().copy(photosBase64 = updatePhotoList)
                     )
@@ -74,6 +75,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
 
         viewModel.currentTaskLiveData().value?.let {
             initViews(it)
+            Log.d("alz-04", "fragment onCreate photos: ${it.photosBase64.size}")
         }
 
         viewModel.currentTaskLiveData().observe(viewLifecycleOwner) {
@@ -194,7 +196,21 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
 
         photosRcViewAdapter = PhotoRcViewAdapter(object : PhotoRcViewAdapter.OnPhotoClickListener {
             override fun onClick(photo: String) {
+                val bottomSheet = PhotoPreviewBottomSheet(
+                    photo = photo,
+                    onDeleteClicked = {
+                        val currentList = ArrayList(photosRcViewAdapter.list)
+                        currentList.remove(photo)
 
+                        Log.d("alz-04", "updatePhotosList: ${currentList.size}")
+
+                        val updatedTask = viewModel.currentTask().copy(photosBase64 = currentList)
+                        viewModel.updateTaskUniversal(updatedTask)
+
+                        photosRcViewAdapter.update(currentList)
+                    }
+                )
+                bottomSheet.show(parentFragmentManager, "PhotoPreview")
             }
         })
         binding.photoRcView.adapter = photosRcViewAdapter

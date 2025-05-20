@@ -41,7 +41,7 @@
                     style="@style/EditTextAuthStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:background="@drawable/edittesdt_uderline"
                     android:autofillHints="emailAddress"
                     android:hint="@string/emailEditTextHint"

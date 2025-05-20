@@ -76,18 +76,18 @@ class TaskInfoViewModel(
             currentTask().columnId,
             task
         )
+        Log.d("alz-04", "task photos size: ${task.photosBase64.size}")
         when (result) {
             is Result.Success -> {
                 withContext(dispatcherMain) {
                     clickedBoardLiveDataWrapper.update(result.data)
                     clickedTaskLiveDataWrapper.update(task)
-                    Log.d("alz-04", "board updated with workers: ${result.data.columns[0].tasks[0].workers.map { it.user.email }}")
-                    //navigation.update(Screen.Pop)
                 }
             }
 
             is Result.Error -> {
                 _message.postValue("На данный момент добавление комментариев недоступно")
+                Log.d("alz-04", "task not updated")
             }
         }
     }

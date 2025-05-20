@@ -7,203 +7,199 @@
     android:background="@android:color/white"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <!-- Название доски -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/boardCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/boardTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/onest_medium"
+                    android:text="Название доски"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/deleteBoardButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="Удалить доску"
+                    android:padding="4dp"
+                    android:background="@drawable/trash"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/boardNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/boardTitleTextView"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/onest_medium"
+                    android:hint="Введите название доски"
+                    android:inputType="text"
+                    android:padding="12dp" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Добавление столбца -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addColumnCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/onest_medium"
+                    android:text="Добавить столбец"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/columnNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/onest_medium"
+                    android:hint="Название столбца"
+                    android:inputType="text"
+                    android:padding="12dp" />
+
+                <Button
+                    android:id="@+id/addColumnButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/primary"
+                    android:fontFamily="@font/onest_medium"
+                    android:text="Добавить" />
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <TextView
-            android:id="@+id/boardNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/onest_medium"
-            android:text="Название доски"
+            android:text="Все столбцы:"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/boardNameEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/onest_medium"
-            android:hint="Введите название доски"
-            android:inputType="text"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/boardNameLabel" />
-
-        <ImageButton
-            android:id="@+id/deleteBoardButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/trash"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/addColumnLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/onest_medium"
-            android:text="Добавить столбец"
-            android:padding="8dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/boardNameEditText" />
-
-        <EditText
-            android:id="@+id/columnNameEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/onest_medium"
-            android:hint="Название столбца"
-            android:inputType="text"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addColumnLabel" />
-
-        <TextView
-            android:id="@+id/allColumnsHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/onest_medium"
-            android:padding="8dp"
-            android:text="Все столбцы: "
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
-            app:layout_constraintTop_toBottomOf="@+id/addColumnButton" />
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/allColumnNamesListTV"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:layout_marginTop="4dp"-->
-        <!--            android:fontFamily="@font/onest_medium"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/columnNameEditText"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/allColumnsHeader" />-->
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allColumnsRcView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="@+id/columnNameEditText"
-            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
-            app:layout_constraintTop_toBottomOf="@+id/allColumnsHeader" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <Button
-            android:id="@+id/addColumnButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/brown"
-            android:fontFamily="@font/onest_medium"
-            android:text="Добавить"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@+id/columnNameEditText"
-            app:layout_constraintTop_toBottomOf="@+id/columnNameEditText" />
 
         <!-- Добавление участника -->
-        <TextView
-            android:id="@+id/addMemberLabel"
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/onest_medium"
-            android:text="Добавить участника"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/allColumnsRcView" />
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
-        <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/onest_medium"
-            android:hint="Email участника"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addMemberLabel" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <Spinner
-            android:id="@+id/accessSpinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:entries="@array/board_access_roles"
-            android:fontFamily="@font/onest_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/onest_medium"
+                    android:text="Добавить участника"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/addMemberButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/brown"
-            android:fontFamily="@font/onest_medium"
-            android:text="Добавить участника"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/accessSpinner" />
+                <EditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/onest_medium"
+                    android:hint="Email участника"
+                    android:inputType="textEmailAddress"
+                    android:padding="12dp" />
 
-        <!-- Список участников -->
+                <Spinner
+                    android:id="@+id/accessSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:entries="@array/board_access_roles"
+                    android:spinnerMode="dropdown" />
+
+                <Button
+                    android:id="@+id/addMemberButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/primary"
+                    android:fontFamily="@font/onest_medium"
+                    android:text="Добавить участника" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <TextView
             android:id="@+id/membersLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/onest_medium"
             android:text="Участники доски:"
-            android:padding="8dp"
             android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addMemberButton" />
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/membersRcView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/membersLabel"
             tools:listitem="@layout/rc_view_member_item" />
 
         <!-- Сохранить изменения -->
         <Button
             android:id="@+id/saveButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:backgroundTint="@color/brown"
+            android:backgroundTint="@color/primary"
             android:fontFamily="@font/onest_medium"
-            android:text="Сохранить"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/membersRcView" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Сохранить" />
+    </LinearLayout>
 </ScrollView>

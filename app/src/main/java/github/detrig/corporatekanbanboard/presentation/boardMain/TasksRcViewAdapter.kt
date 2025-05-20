@@ -3,6 +3,7 @@ package github.detrig.corporatekanbanboard.presentation.boardMain
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.detrig.corporatekanbanboard.R
@@ -34,32 +35,35 @@ class TasksRcViewAdapter(
         fun bind(task: Task, listener: OnTaskClickListener) = with(binding) {
             taskTitleTV.text = task.title
 
-            when (task.taskProgress) {
-                TaskProgress.IN_WORK -> {
-                    when (task.priority) {
-                        Priority.LOW_EMERGENCY -> taskContainer.setBackgroundResource(
-                            R.color.light_green
-
-                        )
-
-                        Priority.MEDIUM_EMERGENCY -> taskContainer.setBackgroundResource(
-                            R.color.light_orange
-                        )
-
-                        Priority.HIGH_EMERGENCY -> taskContainer.setBackgroundResource(
-                            R.color.light_red
-                        )
-                    }
-                }
-
-                TaskProgress.DONE ->
-                    taskContainer.setBackgroundResource(R.color.medium_light_gray)
-
-                TaskProgress.NEED_REVIEW -> {
-                    taskContainer.setBackgroundResource(R.drawable.border)
-                    taskTitleTV.setTextColor(itemView.context.getColor(R.color.black))
-                }
+            // Статус
+            statusTV.text = when (task.taskProgress) {
+                TaskProgress.IN_WORK -> "В работе"
+                TaskProgress.DONE -> "Готово"
+                TaskProgress.NEED_REVIEW -> "На проверке"
             }
+
+            // Цвет статуса
+            val statusColor = when (task.taskProgress) {
+                TaskProgress.IN_WORK -> R.color.light_green
+                TaskProgress.DONE -> R.color.medium_light_gray
+                TaskProgress.NEED_REVIEW -> R.color.light_blue
+            }
+            statusTV.setBackgroundColor(ContextCompat.getColor(itemView.context, statusColor))
+
+            // Приоритет
+            priorityTV.text = when (task.priority) {
+                Priority.LOW_EMERGENCY -> "Низкий"
+                Priority.MEDIUM_EMERGENCY -> "Средний"
+                Priority.HIGH_EMERGENCY -> "Высокий"
+            }
+
+            // Цвет приоритета
+            val priorityColor = when (task.priority) {
+                Priority.LOW_EMERGENCY -> R.color.light_green
+                Priority.MEDIUM_EMERGENCY -> R.color.light_orange
+                Priority.HIGH_EMERGENCY -> R.color.light_red
+            }
+            priorityTV.setBackgroundColor(ContextCompat.getColor(itemView.context, priorityColor))
 
             itemView.setOnClickListener {
                 listener.onClick(task)

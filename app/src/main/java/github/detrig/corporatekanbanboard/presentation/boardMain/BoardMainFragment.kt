@@ -30,6 +30,7 @@ class BoardMainFragment : AbstractFragment<FragmentBoardMainBinding>() {
 
         initViews(currentUserRoleForThisBoard)
         initRcView(currentUserRoleForThisBoard)
+
         viewModel.currentBoard().value?.let {
             columnWithTasksRcViewAdapter.update(ArrayList(it.columns))
             binding.boardTitleTextView.text = it.title

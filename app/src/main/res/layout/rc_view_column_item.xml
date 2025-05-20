@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:fontFamily="@font/onest_medium"
-        android:backgroundTint="@color/brown"
+        android:backgroundTint="@color/light_gray"
         android:textColor="@color/white"
         android:padding="2dp"
         android:textSize="14dp"
