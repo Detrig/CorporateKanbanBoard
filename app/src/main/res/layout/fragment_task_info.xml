@@ -246,7 +246,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Кнопка "Выполнено" -->
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/taskDoneButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
             app:layout_constraintStart_toStartOf="@id/commentInputLayout"
             app:layout_constraintEnd_toEndOf="@id/sendCommentButton" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/taskAcceptAfterReviewButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

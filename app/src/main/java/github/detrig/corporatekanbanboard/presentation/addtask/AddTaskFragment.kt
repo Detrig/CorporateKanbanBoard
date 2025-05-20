@@ -51,7 +51,7 @@ class AddTaskFragment : AbstractFragment<FragmentAddTaskBinding>() {
                     title = binding.titleEditText.text.toString(),
                     description = binding.descriptionEditText.text.toString(),
                     priority = priority,
-                    workers = workersRcViewAdapter.selectedWorkersList
+                    workers = selectedUsers.toList()
                 )
                 viewModel.addTasks(task)
             }

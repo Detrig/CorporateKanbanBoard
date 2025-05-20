@@ -118,9 +118,25 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         taskDate.text = taskDate.text.toString() + task.dateCreated
         taskDescription.text = task.description
         taskProgress.text = when (task.taskProgress) {
-            TaskProgress.IN_WORK -> taskProgress.text.toString() + "В работе"
-            TaskProgress.NEED_REVIEW -> taskProgress.text.toString() + "Нуждается в проверке"
-            TaskProgress.DONE -> taskProgress.text.toString() + "Выполнено"
+            TaskProgress.IN_WORK -> {
+                binding.taskAcceptAfterReviewButton.visibility = View.INVISIBLE
+                taskProgress.text.toString() + "В работе"
+            }
+
+            TaskProgress.NEED_REVIEW -> {
+                if (task.creator == App.currentUserEmail || viewModel.getUserRoleForCurrentBoard() == BoardAccess.ADMIN) {
+                    binding.taskAcceptAfterReviewButton.visibility = View.VISIBLE
+                }
+                binding.taskDoneButton.setBackgroundColor(resources.getColor(R.color.medium_light_gray))
+                taskProgress.text.toString() + "Нуждается в проверке"
+            }
+
+            TaskProgress.DONE -> {
+                binding.taskDoneButton.setBackgroundColor(resources.getColor(R.color.medium_light_gray))
+                binding.taskAcceptAfterReviewButton.setBackgroundColor(resources.getColor(R.color.medium_light_gray))
+                binding.taskAcceptAfterReviewButton.text = "Принято"
+                taskProgress.text.toString() + "Выполнено"
+            }
         }
 
         taskPriority.text = when (task.priority) {
@@ -131,7 +147,6 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
 
         if (task.creator == App.currentUserEmail || viewModel.getUserRoleForCurrentBoard() == BoardAccess.ADMIN) {
             binding.deleteTaskButton.visibility = View.VISIBLE
-            binding.taskAcceptAfterReviewButton.visibility = View.VISIBLE
         }
 
         when (viewModel.getUserRoleForCurrentBoard()) {
@@ -153,11 +168,19 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         }
 
         binding.taskDoneButton.setOnClickListener {
+            binding.taskDoneButton.setBackgroundColor(resources.getColor(R.color.medium_light_gray))
             val updatedTask = task.copy(taskProgress = TaskProgress.NEED_REVIEW)
             viewModel.updateTaskUniversal(updatedTask)
+
+            if (task.creator == App.currentUserEmail || viewModel.getUserRoleForCurrentBoard() == BoardAccess.ADMIN) {
+                binding.taskAcceptAfterReviewButton.visibility = View.VISIBLE
+            }
         }
 
         binding.taskAcceptAfterReviewButton.setOnClickListener {
+            binding.taskDoneButton.setBackgroundColor(resources.getColor(R.color.medium_light_gray))
+            binding.taskAcceptAfterReviewButton.text = "Принято"
+
             val updatedTask = task.copy(taskProgress = TaskProgress.DONE)
             viewModel.updateTaskUniversal(updatedTask)
         }

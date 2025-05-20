@@ -105,33 +105,40 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
                 Toast.makeText(requireContext(), "Идет проверка пользователя", Toast.LENGTH_SHORT)
                     .show()
                 viewModel.isUserExistByEmail(email.toString())
-                if (viewModel.isUserExistLiveData.value?.second != null) {
-                    val access = when (binding.accessSpinner.selectedItem.toString()) {
-                        "Админ" -> BoardAccess.ADMIN
-                        "Лидер" -> BoardAccess.LEADER
-                        "Работник" -> BoardAccess.WORKER
-                        "Наблюдатель" -> BoardAccess.VIEWER
-                        else -> {
-                            BoardAccess.VIEWER
+                viewModel.isUserExistLiveData.observe(viewLifecycleOwner) {
+                    if (it.second != null) {
+                        val access = when (binding.accessSpinner.selectedItem.toString()) {
+                            "Админ" -> BoardAccess.ADMIN
+                            "Лидер" -> BoardAccess.LEADER
+                            "Работник" -> BoardAccess.WORKER
+                            "Наблюдатель" -> BoardAccess.VIEWER
+                            else -> {
+                                BoardAccess.VIEWER
+                            }
                         }
-                    }
-                    val newBoardMember = BoardMember(
-                        viewModel.isUserExistLiveData.value?.second ?: User(), access
-                    )
-
-                    var isMemberAlreadyAdded = false
-                    membersRcViewAdapter.list.forEach { if (it.user.id == newBoardMember.user.id) {
-                        isMemberAlreadyAdded = true
-                    }
-                    }
-
-                    if (!isMemberAlreadyAdded) {
-                        newMembersList.add(
-                            newBoardMember
+                        val newBoardMember = BoardMember(
+                            viewModel.isUserExistLiveData.value?.second ?: User(), access
                         )
-                        membersRcViewAdapter.update(ArrayList(newMembersList))
-                    } else {
-                        Toast.makeText(requireContext(), "Данный пользователь уже добавлен", Toast.LENGTH_SHORT).show()
+
+                        var isMemberAlreadyAdded = false
+                        membersRcViewAdapter.list.forEach {
+                            if (it.user.email == newBoardMember.user.email) {
+                                isMemberAlreadyAdded = true
+                            }
+                        }
+
+                        if (!isMemberAlreadyAdded) {
+                            newMembersList.add(
+                                newBoardMember
+                            )
+                            membersRcViewAdapter.update(ArrayList(newMembersList))
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Данный пользователь уже добавлен",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             } else {
