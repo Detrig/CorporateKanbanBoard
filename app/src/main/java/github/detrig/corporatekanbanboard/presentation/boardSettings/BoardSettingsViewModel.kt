@@ -15,6 +15,7 @@ import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsReposit
 import github.detrig.corporatekanbanboard.domain.repository.user.UserBoardRepository
 import github.detrig.corporatekanbanboard.presentation.boards.BoardsScreen
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardUsersLiveDataWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class BoardSettingsViewModel(
     private val boardsRepository: BoardsRepository,
     private val userRepository: UserBoardRepository,
     private val currentBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
+    private val clickedBoardUsersLiveDataWrapper: ClickedBoardUsersLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
@@ -52,16 +54,16 @@ class BoardSettingsViewModel(
                     }
                 }
             }
-            members.forEach { userRepository.addBoardToUser(it.user.id, board.id) }
+            members.forEach { userRepository.addBoardToUser(it.userId, board.id) }
         }
     }
 
-    fun deleteUserFromBoard(user: User) {
+    fun deleteUserFromBoard(userId: String) {
         viewModelScope.launch(dispatcherIo) {
-            val updatedBoardMemberList = currentBoard().members.filter { it.user.id != user.id }
+            val updatedBoardMemberList = currentBoard().members.filter { it.userId != userId }
             val updatedBoard = currentBoard().copy(members = updatedBoardMemberList)
 
-            userRepository.deleteBoard(user.id, currentBoard().id)
+            userRepository.deleteBoard(userId, currentBoard().id)
             val deleteUserResult = boardsRepository.updateBoardRemote(App.currentUserId, updatedBoard)
             when(deleteUserResult) {
                 is Result.Success -> {
@@ -113,4 +115,6 @@ class BoardSettingsViewModel(
     fun currentBoard() = currentBoardLiveDataWrapper.liveData().value ?: Board()
 
     fun currentBoardLiveData() = currentBoardLiveDataWrapper.liveData()
+
+    fun getUsers() = clickedBoardUsersLiveDataWrapper.liveData().value ?: emptyList()
 }

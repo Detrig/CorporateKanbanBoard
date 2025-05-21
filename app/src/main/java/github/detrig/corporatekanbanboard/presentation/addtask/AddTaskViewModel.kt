@@ -13,6 +13,7 @@ import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardUsersLiveDataWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ class AddTaskViewModel(
     private val navigation: Navigation,
     private val boardsRepository: BoardsRepository,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
+    private val clickedBoardUsersLiveDataWrapper: ClickedBoardUsersLiveDataWrapper,
     private val workersLiveDataWrapper : WorkersLiveDataWrapper,
     private val columnToAddLiveDataWrapper: ColumnToAddLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
@@ -71,4 +73,6 @@ class AddTaskViewModel(
 //    }
 
     fun getCurrentBoard() = clickedBoardLiveDataWrapper.liveData().value ?: Board()
+
+    fun getUsers() = clickedBoardUsersLiveDataWrapper.liveData().value ?: emptyList()
 }

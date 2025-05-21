@@ -23,6 +23,7 @@ import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.Priority
 import github.detrig.corporatekanbanboard.domain.model.TaskProgress
 import github.detrig.corporatekanbanboard.domain.model.User
+import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardUsersLiveDataWrapper
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -31,7 +32,7 @@ class TaskInfoViewModel(
     private val boardsRepository: BoardsRepository,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
     private val clickedTaskLiveDataWrapper: ClickedTaskLiveDataWrapper,
-    private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
+    private val clickedBoardUsersLiveDataWrapper: ClickedBoardUsersLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
@@ -40,9 +41,9 @@ class TaskInfoViewModel(
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
-    fun currentUser() = currentUserLiveDataWrapper.liveData().value ?: User()
-
     fun currentBoard() = clickedBoardLiveDataWrapper.liveData().value ?: Board()
+
+    fun getUsers() = clickedBoardUsersLiveDataWrapper.liveData().value ?: emptyList()
 
     fun acceptCompletedTask() {
         if (App.currentUserId == currentTask().creator) {
@@ -124,7 +125,7 @@ class TaskInfoViewModel(
     fun getUserRoleForCurrentBoard() : BoardAccess {
         var userRoleForCurrentBoard = BoardAccess.VIEWER
         clickedBoardLiveDataWrapper.liveData().value?.members?.forEach {
-            if (it.user.id == App.currentUserId)
+            if (it.userId == App.currentUserId)
                 userRoleForCurrentBoard = it.access
         }
         return userRoleForCurrentBoard

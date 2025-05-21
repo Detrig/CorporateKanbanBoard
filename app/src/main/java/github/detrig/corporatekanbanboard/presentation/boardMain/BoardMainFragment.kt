@@ -47,13 +47,18 @@ class BoardMainFragment : AbstractFragment<FragmentBoardMainBinding>() {
         }
     }
 
-    private fun initRcView(currentUserRoleForThisBoard : BoardAccess) {
+    private fun initRcView(currentUserRoleForThisBoard: BoardAccess) {
         columnWithTasksRcViewAdapter =
             ColumnWithTasksRcViewAdapter(object :
                 ColumnWithTasksRcViewAdapter.OnAddTaskButtonClickListener {
                 override fun clickAddTaskButton(column: Column) {
                     viewModel.addTaskScreen(column)
                 }
+            }, object : ColumnWithTasksRcViewAdapter.OnColumnsClickListener {
+                override fun clickColumn(column: Column) {
+                    viewModel.columnInfoScreen(column)
+                }
+
             }, object : TasksRcViewAdapter.OnTaskClickListener {
                 override fun onClick(task: Task) {
                     viewModel.clickedTaskScreen(task)
@@ -64,7 +69,7 @@ class BoardMainFragment : AbstractFragment<FragmentBoardMainBinding>() {
         binding.columnsRcView.adapter = columnWithTasksRcViewAdapter
     }
 
-    private fun initViews(currentUserRoleForThisBoard : BoardAccess) {
+    private fun initViews(currentUserRoleForThisBoard: BoardAccess) {
         when (currentUserRoleForThisBoard) {
             BoardAccess.ADMIN -> binding.settingsButton.visibility = View.VISIBLE
             BoardAccess.LEADER -> binding.settingsButton.visibility = View.VISIBLE

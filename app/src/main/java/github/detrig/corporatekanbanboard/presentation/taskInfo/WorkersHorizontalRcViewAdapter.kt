@@ -1,5 +1,6 @@
 package github.detrig.corporatekanbanboard.presentation.taskInfo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +13,20 @@ import github.detrig.corporatekanbanboard.core.ImageUtils
 import github.detrig.corporatekanbanboard.databinding.RcViewWorkerItemHorizontalBinding
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
+import github.detrig.corporatekanbanboard.domain.model.User
 
-class WorkersHorizontalRcViewAdapter(private val listener : OnWorkerClickListener) : RecyclerView.Adapter<WorkersHorizontalRcViewAdapter.ViewHolder>() {
+class WorkersHorizontalRcViewAdapter(private val listener : OnWorkerClickListener, private val usersList: List<User>) : RecyclerView.Adapter<WorkersHorizontalRcViewAdapter.ViewHolder>() {
 
     val list : ArrayList<BoardMember> = arrayListOf()
-    var selectedWorkersList: ArrayList<BoardMember> = arrayListOf()
+    //var selectedWorkersList: ArrayList<BoardMember> = arrayListOf()
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewWorkerItemHorizontalBinding.bind(view)
 
-        fun bind(worker: BoardMember, listener : OnWorkerClickListener, selectedWorkersList: ArrayList<BoardMember>) = with(binding) {
+        fun bind(worker: BoardMember, usersList: List<User>, listener : OnWorkerClickListener) = with(binding) {
 
-            memberNameTextView.text = worker.user.name
-            memberEmailTextView.text = worker.user.email
+            memberNameTextView.text = worker.name
+            memberEmailTextView.text = worker.email
 
             when (worker.access) {
                 BoardAccess.ADMIN -> memberRoleTextView.text = "Роль: Админ"
@@ -33,7 +35,12 @@ class WorkersHorizontalRcViewAdapter(private val listener : OnWorkerClickListene
                 BoardAccess.VIEWER -> memberRoleTextView.text = "Роль: Наблюдатель"
             }
 
-            val bitmap = ImageUtils.base64ToBitmap(worker.user.avatarBase64)
+            val user = usersList.find {
+                Log.d("alz-04", "it: ${it.id} ${it.email}, worker: ${worker.userId} ${worker.email}")
+                it.id == worker.userId } ?: User()
+
+            Log.d("alz-04", "found user: ${user.email}")
+            val bitmap = ImageUtils.base64ToBitmap(user.avatarBase64)
             val requestOptions = RequestOptions()
                 .circleCrop() // или .transform(RoundedCorners(16)) для закругления углов
                 .placeholder(R.drawable.user)
@@ -68,7 +75,7 @@ class WorkersHorizontalRcViewAdapter(private val listener : OnWorkerClickListene
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], listener, selectedWorkersList)
+        holder.bind(list[position], usersList, listener)
     }
 
     class DiffUtilCallBack(
@@ -98,6 +105,6 @@ class WorkersHorizontalRcViewAdapter(private val listener : OnWorkerClickListene
 
     interface OnWorkerClickListener {
         fun onClick(worker: BoardMember)
-        fun onSelectWorker(worker: BoardMember)
+        //fun onSelectWorker(worker: BoardMember)
     }
 }

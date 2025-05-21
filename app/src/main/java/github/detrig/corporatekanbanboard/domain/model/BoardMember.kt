@@ -1,7 +1,9 @@
 package github.detrig.corporatekanbanboard.domain.model
 
 data class BoardMember(
-    val user: User = User(),
+    val userId: String = "",
+    val email: String = "",
+    val name: String = "",
     val access: BoardAccess = BoardAccess.VIEWER
 ) {
     companion object {

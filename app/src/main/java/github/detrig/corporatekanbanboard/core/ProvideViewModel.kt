@@ -42,6 +42,9 @@ import github.detrig.corporatekanbanboard.presentation.boardMain.ClickedTaskLive
 import github.detrig.corporatekanbanboard.presentation.boardMain.ColumnToAddLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.boardSettings.BoardSettingsViewModel
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardUsersLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.columnInfo.ClickedColumnLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.columnInfo.ColumnInfoViewModel
 import github.detrig.corporatekanbanboard.presentation.globalchat.GlobalChatViewModel
 import github.detrig.corporatekanbanboard.presentation.profile.ProfileEditScreen
 import github.detrig.corporatekanbanboard.presentation.profile.ProfileEditViewModel
@@ -96,6 +99,7 @@ interface ProvideViewModel {
         //User
         private val userBoardDataSource = RemoteUserBoardDataSourceImpl(fireBaseFirestore)
         private val userBoardRepository = UserBoardRepositoryImpl(userBoardDataSource)
+        private val clickedBoardUserLiveDataWrapper = ClickedBoardUsersLiveDataWrapper.Base()
 
         //Boards
         //private val boardsLocalRepo
@@ -111,6 +115,7 @@ interface ProvideViewModel {
 
         //Column
         private val columnToAddLiveDataWrapper = ColumnToAddLiveDataWrapper.Base()
+        private val clickedColumnLiveDataWrapper = ClickedColumnLiveDataWrapper.Base()
 
         //Chat
         private val chatRepository = ChatRepositoryImpl(firebaseDatabase)
@@ -157,7 +162,9 @@ interface ProvideViewModel {
                     boardsCommunication,
                     currentUserLiveDataWrapper,
                     clickedBoardLiveDataWrapper,
+                    clickedBoardUserLiveDataWrapper,
                     boardsRepository,
+                    userBoardRepository,
                     viewModelScope
                 )
 
@@ -173,6 +180,7 @@ interface ProvideViewModel {
                     navigation,
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
+                    clickedColumnLiveDataWrapper,
                     clickedTaskLiveDataWrapper,
                     columnToAddLiveDataWrapper,
                     viewModelScope
@@ -182,6 +190,7 @@ interface ProvideViewModel {
                     navigation,
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
+                    clickedBoardUserLiveDataWrapper,
                     workersLiveDataWrapper,
                     columnToAddLiveDataWrapper,
                     viewModelScope
@@ -192,7 +201,7 @@ interface ProvideViewModel {
                     boardsRepository,
                     clickedBoardLiveDataWrapper,
                     clickedTaskLiveDataWrapper,
-                    currentUserLiveDataWrapper,
+                    clickedBoardUserLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -201,6 +210,7 @@ interface ProvideViewModel {
                     boardsRepository,
                     userBoardRepository,
                     clickedBoardLiveDataWrapper,
+                    clickedBoardUserLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -215,6 +225,15 @@ interface ProvideViewModel {
                     logoutUseCase,
                     currentUserRepository,
                     currentUserLiveDataWrapper,
+                    viewModelScope
+                )
+
+                ColumnInfoViewModel::class.java -> ColumnInfoViewModel(
+                    navigation,
+                    boardsRepository,
+                    clickedColumnLiveDataWrapper,
+                    clickedBoardLiveDataWrapper,
+                    clickedBoardUserLiveDataWrapper,
                     viewModelScope
                 )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")

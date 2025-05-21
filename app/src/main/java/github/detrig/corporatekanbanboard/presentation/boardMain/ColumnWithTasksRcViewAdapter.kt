@@ -1,5 +1,6 @@
 package github.detrig.corporatekanbanboard.presentation.boardMain
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import github.detrig.corporatekanbanboard.domain.model.Task
 
 class ColumnWithTasksRcViewAdapter(
     private val addTaskButtonClickListener: OnAddTaskButtonClickListener,
+    private val onColumnClickListener: OnColumnsClickListener,
     private val taskClickListener: TasksRcViewAdapter.OnTaskClickListener,
     private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit,
     private val currentUserRole: BoardAccess
@@ -90,13 +92,25 @@ class ColumnWithTasksRcViewAdapter(
         fun bind(column: Column) = with(binding) {
             columnsTitle.text = column.title
             tasksRcViewAdapter.update(column.tasks, column.id)
-
+            Log.d("alzZ", "currentUserRole: $currentUserRole")
             when (currentUserRole) {
                 BoardAccess.VIEWER -> binding.addTaskButton.visibility = View.GONE
                 else -> binding.addTaskButton.visibility = View.VISIBLE
             }
             binding.addTaskButton.setOnClickListener {
                 addTaskButtonClickListener.clickAddTaskButton(column)
+            }
+
+            when(currentUserRole) {
+                BoardAccess.VIEWER -> binding.columnsTitle.isClickable = false
+                BoardAccess.WORKER -> binding.columnsTitle.isClickable = false
+                else -> binding.addTaskButton.visibility = View.VISIBLE
+            }
+
+            binding.columnsTitle.setOnClickListener {
+                if (currentUserRole != BoardAccess.VIEWER && currentUserRole != BoardAccess.WORKER) {
+                    onColumnClickListener.clickColumn(column)
+                }
             }
         }
     }
@@ -148,5 +162,9 @@ class ColumnWithTasksRcViewAdapter(
 
     interface OnAddTaskButtonClickListener {
         fun clickAddTaskButton(column: Column)
+    }
+
+    interface OnColumnsClickListener {
+        fun clickColumn(column: Column)
     }
 }

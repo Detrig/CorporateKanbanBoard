@@ -13,6 +13,8 @@ import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsReposit
 import github.detrig.corporatekanbanboard.presentation.addtask.AddTaskScreen
 import github.detrig.corporatekanbanboard.presentation.boardSettings.BoardSettingsScreen
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.columnInfo.ClickedColumnLiveDataWrapper
+import github.detrig.corporatekanbanboard.presentation.columnInfo.ColumnInfoScreen
 import github.detrig.corporatekanbanboard.presentation.taskInfo.TaskInfoScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +25,7 @@ class BoardMainViewModel(
     private val navigation: Navigation,
     private val boardsRepository: BoardsRepository,
     private val clickedBoardLiveDataWrapper: ClickedBoardLiveDataWrapper,
+    private val clickedColumnLiveDataWrapper: ClickedColumnLiveDataWrapper,
     private val clickedTaskLiveDataWrapper: ClickedTaskLiveDataWrapper,
     private val columnToAddLiveDataWrapper : ColumnToAddLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
@@ -56,10 +59,15 @@ class BoardMainViewModel(
         navigation.update(AddTaskScreen)
     }
 
+    fun columnInfoScreen(column: Column) {
+        clickedColumnLiveDataWrapper.update(column)
+        navigation.update(ColumnInfoScreen)
+    }
+
     fun getUserRoleForCurrentBoard() : BoardAccess {
         var userRoleForCurrentBoard = BoardAccess.VIEWER
         currentBoard().value?.members?.forEach {
-            if (it.user.id == App.currentUserId)
+            if (it.userId == App.currentUserId)
                 userRoleForCurrentBoard = it.access
         }
         return userRoleForCurrentBoard

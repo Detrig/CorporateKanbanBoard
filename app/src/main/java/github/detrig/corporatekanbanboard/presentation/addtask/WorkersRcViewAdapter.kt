@@ -14,9 +14,11 @@ import github.detrig.corporatekanbanboard.core.ImageUtils
 import github.detrig.corporatekanbanboard.databinding.RcViewWorkerItemBinding
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
+import github.detrig.corporatekanbanboard.domain.model.User
 
 class WorkersRcViewAdapter(
     private val listener: OnWorkerClickListener,
+    private val usersList: List<User>
 ) :
     RecyclerView.Adapter<WorkersRcViewAdapter.ViewHolder>() {
 
@@ -26,10 +28,10 @@ class WorkersRcViewAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewWorkerItemBinding.bind(view)
 
-        fun bind(worker: BoardMember, listener: OnWorkerClickListener, selectedWorkersList: ArrayList<BoardMember>) = with(binding) {
+        fun bind(worker: BoardMember, usersList: List<User>, listener: OnWorkerClickListener, selectedWorkersList: ArrayList<BoardMember>) = with(binding) {
 
-            memberNameTextView.text = worker.user.name
-            memberEmailTextView.text = worker.user.email
+            memberNameTextView.text = worker.name
+            memberEmailTextView.text = worker.email
             selectCheckBox.isChecked = selectedWorkersList.contains(worker)
 
             when (worker.access) {
@@ -39,7 +41,8 @@ class WorkersRcViewAdapter(
                 BoardAccess.VIEWER -> memberRoleTextView.text = "Роль: Наблюдатель"
             }
 
-            val bitmap = ImageUtils.base64ToBitmap(worker.user.avatarBase64)
+            val user = usersList.find { it.id == worker.userId } ?: User()
+            val bitmap = ImageUtils.base64ToBitmap(user.avatarBase64)
             val requestOptions = RequestOptions()
                 .circleCrop() // или .transform(RoundedCorners(16)) для закругления углов
                 .placeholder(R.drawable.user)
@@ -70,7 +73,6 @@ class WorkersRcViewAdapter(
     fun update(newList: ArrayList<BoardMember>) {
         val diffUtil = DiffUtilCallBack(list, newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
-        Log.d("alz-04", "newList rcView: ${newList.map{it.user.email}}")
         list.clear()
         list.addAll(newList)
         diff.dispatchUpdatesTo(this)
@@ -85,7 +87,7 @@ class WorkersRcViewAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], listener, selectedWorkersList)
+        holder.bind(list[position], usersList, listener, selectedWorkersList)
     }
 
     class DiffUtilCallBack(
@@ -100,7 +102,7 @@ class WorkersRcViewAdapter(
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem.user.id == newItem.user.id
+            return oldItem.userId == newItem.userId
 
         }
 
@@ -108,7 +110,7 @@ class WorkersRcViewAdapter(
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem.user == newItem.user
+            return oldItem.userId == newItem.userId && oldItem.email == newItem.email && oldItem.name == newItem.name
         }
 
     }

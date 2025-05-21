@@ -71,9 +71,7 @@ class AddTaskFragment : AbstractFragment<FragmentAddTaskBinding>() {
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.usersRecyclerView)
         val confirmButton = dialogView.findViewById<Button>(R.id.confirmButton)
 
-        // Полный список пользователей (для фильтрации)
         val allUsers = BoardMember.sortedByRole(viewModel.getCurrentBoard().members)
-        Log.d("alz-04", "allUsers: ${allUsers.map { it.user.email}}")
         workersRcViewAdapter = WorkersRcViewAdapter(object : WorkersRcViewAdapter.OnWorkerClickListener {
             override fun onClick(worker: BoardMember) {
                 // например, показать детали
@@ -86,7 +84,7 @@ class AddTaskFragment : AbstractFragment<FragmentAddTaskBinding>() {
                     selectedUsers.add(worker)
                 }
             }
-        })
+        }, viewModel.getUsers())
         workersRcViewAdapter.selectedWorkersList = ArrayList(selectedUsers)
         recyclerView.adapter = workersRcViewAdapter
         workersRcViewAdapter.update(ArrayList(allUsers))
@@ -94,14 +92,14 @@ class AddTaskFragment : AbstractFragment<FragmentAddTaskBinding>() {
         searchEditText.addTextChangedListener { text ->
             val query = text.toString().trim().lowercase()
             val filtered = allUsers.filter {
-                it.user.name.lowercase().contains(query) || it.user.email.lowercase().contains(query)
+                it.name.lowercase().contains(query) || it.email.lowercase().contains(query)
             }
             workersRcViewAdapter.update(ArrayList(filtered))
         }
 
         confirmButton.setOnClickListener {
             val names = selectedUsers.joinToString("\n") {
-                if (it.user.name.isNotBlank()) it.user.name else it.user.email
+                if (it.name.isNotBlank()) it.name else it.email
             }
             binding.workersEditText.setText(names)
             dialog.dismiss()

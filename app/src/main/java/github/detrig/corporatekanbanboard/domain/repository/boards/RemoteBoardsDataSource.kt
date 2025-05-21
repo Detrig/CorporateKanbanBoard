@@ -1,6 +1,5 @@
 package github.detrig.corporatekanbanboard.domain.repository.boards
 
-import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
 

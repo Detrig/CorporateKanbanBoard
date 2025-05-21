@@ -190,7 +190,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         }
 
         viewModel.currentTask().workers.forEach {
-            if (it.user.id == App.currentUserId && (it.access == BoardAccess.LEADER || it.access == BoardAccess.ADMIN)) {
+            if (it.userId == App.currentUserId && (it.access == BoardAccess.LEADER || it.access == BoardAccess.ADMIN)) {
                 binding.addWorkerButton.visibility = View.VISIBLE
             }
         }
@@ -243,15 +243,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
             override fun onClick(worker: BoardMember) {
 
             }
-
-            override fun onSelectWorker(worker: BoardMember) {
-//                if (selectedUsers.contains(worker)) {
-//                    selectedUsers.remove(worker)
-//                } else {
-//                    selectedUsers.add(worker)
-//                }
-            }
-        })
+        }, viewModel.getUsers())
         binding.workersRcView.adapter = workersHorizontalRcViewAdapter
     }
 
@@ -278,7 +270,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
 
         // Полный список пользователей (для фильтрации)
         val allUsers = BoardMember.sortedByRole(viewModel.currentBoard().members)
-        Log.d("alz-04", "allUsers: ${allUsers.map { it.user.email }}")
+        Log.d("alz-04", "allUsers: ${allUsers.map { it.email }}")
         workersRcViewAdapter =
             WorkersRcViewAdapter(object : WorkersRcViewAdapter.OnWorkerClickListener {
                 override fun onClick(worker: BoardMember) {
@@ -292,7 +284,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
                         selectedUsers.add(worker)
                     }
                 }
-            })
+            }, viewModel.getUsers())
         workersRcViewAdapter.selectedWorkersList = ArrayList(selectedUsers)
         recyclerView.adapter = workersRcViewAdapter
         workersRcViewAdapter.update(ArrayList(allUsers))
@@ -300,7 +292,7 @@ class TaskInfoFragment : AbstractFragment<FragmentTaskInfoBinding>() {
         searchEditText.addTextChangedListener { text ->
             val query = text.toString().trim().lowercase()
             val filtered = allUsers.filter {
-                it.user.name.lowercase().contains(query) || it.user.email.lowercase()
+                it.name.lowercase().contains(query) || it.email.lowercase()
                     .contains(query)
             }
             workersRcViewAdapter.update(ArrayList(filtered))

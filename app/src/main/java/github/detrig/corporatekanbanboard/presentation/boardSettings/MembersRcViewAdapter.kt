@@ -12,8 +12,12 @@ import github.detrig.corporatekanbanboard.core.ImageUtils
 import github.detrig.corporatekanbanboard.databinding.RcViewMemberItemBinding
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
+import github.detrig.corporatekanbanboard.domain.model.User
 
-class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
+class MembersRcViewAdapter(
+    private val listener: OnMemberClickListener,
+    private val usersList: List<User>
+) :
     RecyclerView.Adapter<MembersRcViewAdapter.ViewHolder>() {
 
     val list: MutableSet<BoardMember> = mutableSetOf()
@@ -21,21 +25,23 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewMemberItemBinding.bind(view)
 
-        fun bind(member: BoardMember, listener: OnMemberClickListener) = with(binding) {
+        fun bind(member: BoardMember, usersList: List<User>, listener: OnMemberClickListener) = with(binding) {
 
-            memberNameTextView.text = member.user.name
-            memberEmailTextView.text = member.user.email
+            memberNameTextView.text = member.name
+            memberEmailTextView.text = member.email
             when (member.access) {
                 BoardAccess.ADMIN -> {
                     deleteMemberButton.visibility = View.GONE
                     memberRoleTextView.text = "Роль: Админ"
                 }
+
                 BoardAccess.LEADER -> memberRoleTextView.text = "Роль: Лидер"
                 BoardAccess.WORKER -> memberRoleTextView.text = "Роль: Работник"
                 BoardAccess.VIEWER -> memberRoleTextView.text = "Роль: Наблюдатель"
             }
 
-            val bitmap = ImageUtils.base64ToBitmap(member.user.avatarBase64)
+            val user = usersList.find { it.id == member.userId } ?: User()
+            val bitmap = ImageUtils.base64ToBitmap(user.avatarBase64)
 
             val requestOptions = RequestOptions()
                 .circleCrop() // или .transform(RoundedCorners(16)) для закругления углов
@@ -75,7 +81,7 @@ class MembersRcViewAdapter(private val listener: OnMemberClickListener) :
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list.toList()[position], listener)
+        holder.bind(list.toList()[position], usersList, listener)
     }
 
     class DiffUtilCallBack(

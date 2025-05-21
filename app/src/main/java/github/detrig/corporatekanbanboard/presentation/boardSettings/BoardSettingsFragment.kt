@@ -15,7 +15,6 @@ import github.detrig.corporatekanbanboard.domain.model.Board
 import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Column
-import github.detrig.corporatekanbanboard.domain.model.User
 import github.detrig.corporatekanbanboard.presentation.addBoard.ColumnsRcViewAdapter
 
 class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
@@ -70,7 +69,7 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
                 override fun deleteMemberClickListener(member: BoardMember) {
                     showDeleteMemberConfirmationDialog(member)
                 }
-            })
+            }, viewModel.getUsers())
         binding.membersRcView.adapter = membersRcViewAdapter
 
         columnsRcViewAdapter = ColumnsRcViewAdapter { position ->
@@ -117,12 +116,15 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
                             }
                         }
                         val newBoardMember = BoardMember(
-                            viewModel.isUserExistLiveData.value?.second ?: User(), access
+                            viewModel.isUserExistLiveData.value?.second?.id ?: "",
+                            viewModel.isUserExistLiveData.value?.second?.email ?: "",
+                            viewModel.isUserExistLiveData.value?.second?.name ?: "",
+                            access
                         )
 
                         var isMemberAlreadyAdded = false
                         membersRcViewAdapter.list.forEach {
-                            if (it.user.email == newBoardMember.user.email) {
+                            if (it.email == newBoardMember.email) {
                                 isMemberAlreadyAdded = true
                             }
                         }
@@ -167,9 +169,9 @@ class BoardSettingsFragment : AbstractFragment<FragmentBoardSettingsBinding>() {
     private fun showDeleteMemberConfirmationDialog(member: BoardMember) {
         AlertDialog.Builder(requireContext())
             .setTitle("Удаление участника")
-            .setMessage("Вы уверены, что хотите удалить участника ${member.user.email}?")
+            .setMessage("Вы уверены, что хотите удалить участника ${member.email}?")
             .setPositiveButton("Удалить") { _, _ ->
-                viewModel.deleteUserFromBoard(member.user)
+                viewModel.deleteUserFromBoard(member.userId)
             }
             .setNegativeButton("Отмена", null)
             .create()

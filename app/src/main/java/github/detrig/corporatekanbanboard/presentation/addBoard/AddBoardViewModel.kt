@@ -38,7 +38,7 @@ class AddBoardViewModel(
             val user = currentUserLiveDataWrapper.liveData().value ?: User()
             val fullBoard = board.copy(
                 creatorId = user.id, creatorEmail = user.email, members = listOf(
-                    BoardMember(user, BoardAccess.ADMIN)
+                    BoardMember(user.id, user.email, user.name, BoardAccess.ADMIN)
                 )
             )
             val result = boardsRepository.addBoardRemote(user.id, fullBoard)

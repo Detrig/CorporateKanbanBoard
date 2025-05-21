@@ -5,6 +5,8 @@ import java.util.UUID
 data class Column(
     val id: String = "",
     var title: String = "",
+    var responsiblePerson: List<BoardMember> = emptyList(),
+    var workers: List<BoardMember> = emptyList(),
     val tasks: List<Task> = emptyList()
 ) {
     companion object {
