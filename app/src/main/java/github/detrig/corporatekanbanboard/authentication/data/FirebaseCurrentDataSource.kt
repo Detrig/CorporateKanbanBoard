@@ -33,6 +33,21 @@ class FirebaseCurrentDataSource(
         }
     }
 
+    override suspend fun updateCurrentUser(user: User): Resource<Unit> {
+        return try {
+            val uid = auth.currentUser?.uid ?: return Resource.Error("User not authenticated")
+
+            firestore.collection(USER_COLLECTION)
+                .document(uid)
+                .set(user.copy(id = uid))
+                .await()
+
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "Failed to update user")
+        }
+    }
+
     private companion object {
         const val USER_COLLECTION = "users"
     }

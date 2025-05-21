@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/white"
     android:padding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,115 +14,186 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Заголовок и кнопка удаления -->
         <TextView
             android:id="@+id/taskTitle"
             android:layout_width="0dp"
-            style="@style/BoldTextViewStyle"
             android:layout_height="wrap_content"
-            tools:text="Заголовок задачи"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:textSize="28sp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            android:maxLines="3"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@+id/deleteTaskButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:fontFamily="@font/onest_bold"
+            tools:text="Заголовок задачи" />
 
-        <!-- Описание -->
-        <TextView
-            android:id="@+id/taskDescription"
+        <ImageButton
+            android:id="@+id/deleteTaskButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/trash"
+            android:contentDescription="Удалить задачу"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Информация о задаче -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/infoCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="12dp"
             app:layout_constraintTop_toBottomOf="@id/taskTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Автор -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/taskDescription"
+                    style="@style/TextAppearance.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    tools:text="Описание задачи" />
+
+                <TextView
+                    android:id="@+id/taskCreator"
+                    style="@style/TextAppearance.BodySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Создатель: "
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/taskDate"
+                    android:layout_marginTop="4dp"
+                    style="@style/TextAppearance.BodySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Дата: "
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/taskProgress"
+                    style="@style/TextAppearance.BodySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Статус: "
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/taskPriority"
+                    style="@style/TextAppearance.BodySmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Приоритет: "
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
-            android:id="@+id/taskCreator"
+            android:id="@+id/executorsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Исполнители"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/infoCard"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/addWorkerButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Добавить фото"
+            android:src="@drawable/person_add"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/executorsLabel"
+            app:layout_constraintStart_toEndOf="@+id/executorsLabel"
+            app:layout_constraintTop_toTopOf="@+id/executorsLabel"
+            app:tint="@color/primary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/workersRcView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Создатель: "
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
-            app:layout_constraintTop_toBottomOf="@id/taskDescription"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Дата создания -->
-        <TextView
-            android:id="@+id/taskDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Дата создания: "
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
-            app:layout_constraintTop_toBottomOf="@id/taskCreator"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/executorsLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
+            android:orientation="horizontal"/>
 
-        <!-- Статус -->
-        <TextView
-            android:id="@+id/taskProgress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Статус: "
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
-            app:layout_constraintTop_toBottomOf="@id/taskDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Приоритет -->
-        <TextView
-            android:id="@+id/taskPriority"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Приоритет: "
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/taskProgress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Фото метка -->
+        <!-- Фото -->
         <TextView
             android:id="@+id/photosLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Фото:"
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:text="Фото"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/taskPriority"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@id/workersRcView"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Фото (горизонтальный контейнер) -->
-        <LinearLayout
-            android:id="@+id/photoContainer"
+        <ImageButton
+            android:id="@+id/addPhotoButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_add_photo"
+            android:contentDescription="Добавить фото"
+            app:layout_constraintTop_toTopOf="@id/photosLabel"
+            app:layout_constraintBottom_toBottomOf="@id/photosLabel"
+            app:layout_constraintStart_toEndOf="@id/photosLabel"
+            app:tint="@color/primary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photoRcView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clipToPadding="false"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/photosLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/rc_view_item_comment_photos" />
 
-        <!-- Комментарии метка -->
+        <!-- Комментарии -->
         <TextView
             android:id="@+id/commentsLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Комментарии:"
+            android:text="Комментарии"
             android:textStyle="bold"
-            style="@style/NormalTextViewStyle"
-            android:textSize="22sp"
+            android:textSize="18sp"
+            android:textColor="@color/black"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/photoContainer"
+            app:layout_constraintTop_toBottomOf="@id/photoRcView"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -130,43 +202,83 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/commentsLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Поле ввода комментария -->
-        <EditText
-            android:id="@+id/commentEditText"
+        <!-- Добавить комментарий -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/commentInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Введите комментарий"
-            android:fontFamily="@font/onest_medium"
-            android:padding="12dp"
-            android:inputType="text"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
             app:layout_constraintTop_toBottomOf="@id/commentsRecyclerView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/sendCommentButton"
-            app:layout_constraintHorizontal_bias="0"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp">
 
-        <!-- Кнопка отправки -->
-        <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/commentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:inputType="text"
+                android:maxLines="10"
+                android:minLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sendCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Отправить"
-            android:fontFamily="@font/onest_medium"
-            android:padding="16dp"
-            app:layout_constraintTop_toTopOf="@id/commentEditText"
-            app:layout_constraintBottom_toBottomOf="@id/commentEditText"
+            android:text="Отпр."
+            app:iconTint="@color/white"
+            app:iconGravity="end"
+            app:icon="@drawable/send"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toTopOf="@id/commentInputLayout"
+            app:layout_constraintBottom_toBottomOf="@id/commentInputLayout"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Нижний отступ, чтобы прокручивалось до конца -->
+        <!-- Кнопка "Выполнено" -->
+        <Button
+            android:id="@+id/taskDoneButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Выполнено ✔"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/onest_bold"
+            app:cornerRadius="16dp"
+            app:layout_constraintTop_toBottomOf="@id/commentInputLayout"
+            app:layout_constraintStart_toStartOf="@id/commentInputLayout"
+            app:layout_constraintEnd_toEndOf="@id/sendCommentButton" />
+
+        <Button
+            android:id="@+id/taskAcceptAfterReviewButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
+            android:fontFamily="@font/onest_bold"
+            app:cornerRadius="16dp"
+            android:text="Принять выполненную работу"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/taskDoneButton"
+            app:layout_constraintStart_toStartOf="@+id/taskDoneButton"
+            app:layout_constraintTop_toBottomOf="@+id/taskDoneButton" />
+
+        <!-- Нижний отступ -->
         <View
             android:layout_width="0dp"
-            android:layout_height="16dp"
-            app:layout_constraintTop_toBottomOf="@id/commentEditText"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toBottomOf="@id/taskDoneButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

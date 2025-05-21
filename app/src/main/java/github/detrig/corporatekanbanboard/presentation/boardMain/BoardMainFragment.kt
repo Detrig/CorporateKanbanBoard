@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import github.detrig.corporatekanbanboard.core.AbstractFragment
+import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.core.ProvideViewModel
 import github.detrig.corporatekanbanboard.databinding.FragmentBoardMainBinding
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.Column
 import github.detrig.corporatekanbanboard.domain.model.Task
 
@@ -24,26 +26,32 @@ class BoardMainFragment : AbstractFragment<FragmentBoardMainBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as ProvideViewModel).viewModel(BoardMainViewModel::class.java)
+        val currentUserRoleForThisBoard = viewModel.getUserRoleForCurrentBoard()
 
-        initRcView()
+        initViews(currentUserRoleForThisBoard)
+        initRcView(currentUserRoleForThisBoard)
+
         viewModel.currentBoard().value?.let {
             columnWithTasksRcViewAdapter.update(ArrayList(it.columns))
             binding.boardTitleTextView.text = it.title
         }
 
         viewModel.currentBoard().observe(viewLifecycleOwner) {
-           // Log.d("alz04LiveData", "currentBoardTasks updated: ${it.columns[0].tasks}")
+            // Log.d("alz04LiveData", "currentBoardTasks updated: ${it.columns[0].tasks}")
             columnWithTasksRcViewAdapter.update(ArrayList(it.columns))
             binding.boardTitleTextView.text = it.title
         }
+
+        binding.settingsButton.setOnClickListener {
+            viewModel.boardSettingsScreen()
+        }
     }
 
-    private fun initRcView() {
+    private fun initRcView(currentUserRoleForThisBoard : BoardAccess) {
         columnWithTasksRcViewAdapter =
             ColumnWithTasksRcViewAdapter(object :
                 ColumnWithTasksRcViewAdapter.OnAddTaskButtonClickListener {
                 override fun clickAddTaskButton(column: Column) {
-                    Log.d("alz04", "clicked column $column")
                     viewModel.addTaskScreen(column)
                 }
             }, object : TasksRcViewAdapter.OnTaskClickListener {
@@ -52,7 +60,15 @@ class BoardMainFragment : AbstractFragment<FragmentBoardMainBinding>() {
                 }
             }, onTaskMoved = { columnId, tasksList ->
                 viewModel.updateTasks(columnId, tasksList)
-            })
+            }, currentUserRoleForThisBoard)
         binding.columnsRcView.adapter = columnWithTasksRcViewAdapter
+    }
+
+    private fun initViews(currentUserRoleForThisBoard : BoardAccess) {
+        when (currentUserRoleForThisBoard) {
+            BoardAccess.ADMIN -> binding.settingsButton.visibility = View.VISIBLE
+            BoardAccess.LEADER -> binding.settingsButton.visibility = View.VISIBLE
+            else -> binding.settingsButton.visibility = View.GONE
+        }
     }
 }

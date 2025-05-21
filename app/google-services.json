@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "671377330465",
+    "firebase_url": "https://corporatekanbanboard-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "corporatekanbanboard",
     "storage_bucket": "corporatekanbanboard.firebasestorage.app"
   },

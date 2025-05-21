@@ -10,7 +10,7 @@ interface Communication<T> {
     fun add(value: T)
 }
 
-class BaseCommunication<T> : Communication<T> {
+open class BaseCommunication<T> : Communication<T> {
     private val liveData = SingleLiveEvent<List<T>>()
 
     override fun setData(data: List<T>) {

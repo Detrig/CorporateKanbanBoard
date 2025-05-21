@@ -47,5 +47,7 @@ class App : Application(), ProvideViewModel {
 
     companion object {
         var currentUserId: String = ""
+        var currentUserEmail: String = ""
+        var currentUserName: String = ""
     }
 }

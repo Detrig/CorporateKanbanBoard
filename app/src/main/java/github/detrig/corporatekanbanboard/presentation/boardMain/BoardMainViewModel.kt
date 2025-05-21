@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.core.App
 import github.detrig.corporatekanbanboard.core.Navigation
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
 import github.detrig.corporatekanbanboard.domain.model.Column
 import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.presentation.addtask.AddTaskScreen
+import github.detrig.corporatekanbanboard.presentation.boardSettings.BoardSettingsScreen
 import github.detrig.corporatekanbanboard.presentation.boards.ClickedBoardLiveDataWrapper
 import github.detrig.corporatekanbanboard.presentation.taskInfo.TaskInfoScreen
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,10 +30,10 @@ class BoardMainViewModel(
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    fun updateTasks(columnId: String, newTasks: Map<String, String>) {
+    fun updateTasks(columnId: String, tasks: List<Task>) {
         val currentBoard = currentBoard().value ?: Board()
         val updatedColumns = currentBoard.columns.map { column ->
-            if (column.id == columnId) column.copy(taskIds = newTasks)
+            if (column.id == columnId) column.copy(tasks = tasks)
             else column
         }
         clickedBoardLiveDataWrapper.update(currentBoard.copy(columns = updatedColumns))
@@ -41,12 +43,26 @@ class BoardMainViewModel(
     }
 
     fun clickedTaskScreen(task: Task) {
+        clickedTaskLiveDataWrapper.update(task)
         navigation.update(TaskInfoScreen)
+    }
+
+    fun boardSettingsScreen() {
+        navigation.update(BoardSettingsScreen)
     }
 
     fun addTaskScreen(column: Column) {
         columnToAddLiveDataWrapper.update(column)
         navigation.update(AddTaskScreen)
+    }
+
+    fun getUserRoleForCurrentBoard() : BoardAccess {
+        var userRoleForCurrentBoard = BoardAccess.VIEWER
+        currentBoard().value?.members?.forEach {
+            if (it.user.id == App.currentUserId)
+                userRoleForCurrentBoard = it.access
+        }
+        return userRoleForCurrentBoard
     }
 
     fun currentBoard() = clickedBoardLiveDataWrapper.liveData()

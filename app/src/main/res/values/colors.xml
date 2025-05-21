@@ -3,11 +3,19 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#161616</color>
-    <color name="light_gray">#aeaeae</color>
+    <color name="light_gray">#7e7e7e</color>
     <color name="medium_light_gray">#4c4c4c</color>
-    <color name="light_green">#70C247</color>
-    <color name="light_orange">#FFA844</color>
-    <color name="light_red">#F94449</color>
+    <color name="light_blue">#ADD8E6</color>
+    <color name="light_green">#90a955</color>
+    <color name="light_orange">#f4a261</color>
+    <color name="light_red">#e5383b</color>
     <color name="drag_background">#334D8BF7</color>
+    <color name="i_green">#adc178</color>
+    <color name="i_light_green">#adc178</color>
+    <color name="i_giga_light_green">#e8fccf</color>
+    <color name="brown">#6c584c</color>
+    <color name="primary">#3F51B5</color> <!-- Indigo -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#FF9800</color> <!-- Orange -->
 <!--    <color name="drag_background">#22888888</color>-->
 </resources>

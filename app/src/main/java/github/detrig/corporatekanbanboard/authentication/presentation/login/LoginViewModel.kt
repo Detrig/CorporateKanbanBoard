@@ -1,5 +1,6 @@
 package github.detrig.corporatekanbanboard.authentication.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import github.detrig.corporatekanbanboard.authentication.domain.usecase.GetCurrentUserRoleUseCase
 import github.detrig.corporatekanbanboard.authentication.domain.usecase.LoginUseCase
@@ -44,6 +45,8 @@ class LoginViewModel(
                         is Resource.Success -> {
                             currentUserLiveDataWrapper.update(userResource.data!!)
                             App.currentUserId = userResource.data.id
+                            App.currentUserEmail = userResource.data.email
+                            App.currentUserEmail = userResource.data.name
                             navigation.update(BoardsScreen)
                         }
 

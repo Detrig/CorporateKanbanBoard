@@ -5,4 +5,5 @@ import github.detrig.corporatekanbanboard.domain.model.User
 
 interface CurrentUserRepository {
     suspend fun getCurrentUser(): Resource<User>
+    suspend fun updateCurrentUser(user: User) : Resource<Unit>
 }

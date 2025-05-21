@@ -3,17 +3,18 @@ package github.detrig.corporatekanbanboard.data.remote.boards
 import android.util.Log
 import github.detrig.corporatekanbanboard.core.Result
 import github.detrig.corporatekanbanboard.domain.model.Board
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Task
 import github.detrig.corporatekanbanboard.domain.repository.boards.BoardsRepository
 import github.detrig.corporatekanbanboard.domain.repository.boards.LocalBoardsDataSource
 import github.detrig.corporatekanbanboard.domain.repository.boards.RemoteBoardsDataSource
-import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserDataSource
+import github.detrig.corporatekanbanboard.domain.repository.user.RemoteUserBoardDataSource
 import java.util.UUID
 
 class BoardsRepositoryImpl(
     private val localBoard: LocalBoardsDataSource,
     private val remoteBoard: RemoteBoardsDataSource,
-    private val usersDataSource: RemoteUserDataSource,
+    private val usersDataSource: RemoteUserBoardDataSource,
 ) : BoardsRepository {
 
 
@@ -33,10 +34,8 @@ class BoardsRepositoryImpl(
         return try {
             val id = remoteBoard.addBoard(board)
             usersDataSource.addBoardToUser(userId, id)
-            Log.d("lfc", "board added success: $id")
             Result.Success(id)
         } catch (e: Exception) {
-            Log.d("lfc", "Failed to add board: ${e.message}")
             Result.Error("Failed to add board: ${e.message}")
         }
     }
@@ -79,8 +78,7 @@ class BoardsRepositoryImpl(
                     val filteredTasks = column.tasks.filterNot { it.id == taskToAdd.id }
 
                     // Добавляем новую/обновленную задачу в начало списка
-                    val updatedTasks = listOf(taskToAdd) + filteredTasks
-
+                    val updatedTasks = Task.sortedByCustomRules(listOf(taskToAdd) + filteredTasks)
                     column.copy(tasks = updatedTasks)
                 } else {
                     column
@@ -99,6 +97,39 @@ class BoardsRepositoryImpl(
         } catch (e: Exception) {
             Log.e("DB_UPDATE", "Error updating board", e)
             Result.Error("Failed to update task: ${e.message}")
+        }
+    }
+
+    override suspend fun deleteTask(
+        userId: String,
+        board: Board,
+        columnId: String,
+        taskId: String
+    ): Result<Board> {
+        return try {
+            if (columnId.isBlank()) {
+                throw IllegalArgumentException("Column ID cannot be empty")
+            }
+            if (taskId.isBlank()) {
+                throw IllegalArgumentException("Task ID cannot be empty")
+            }
+
+            val updatedColumns = board.columns.map { column ->
+                if (column.id == columnId) {
+                    val updatedTasks = column.tasks.filterNot { it.id == taskId }
+                    column.copy(tasks = updatedTasks)
+                } else {
+                    column
+                }
+            }
+
+            val updatedBoard = board.copy(columns = updatedColumns)
+
+            updateBoardRemote(userId, updatedBoard).let {
+                Result.Success(updatedBoard)
+            }
+        } catch (e: Exception) {
+            Result.Error("Failed to delete task: ${e.message}")
         }
     }
 
@@ -138,6 +169,15 @@ class BoardsRepositoryImpl(
             Result.Success(Unit)
         } catch (e: Exception) {
             Result.Error("Failed to remove user from board: ${e.message}")
+        }
+    }
+
+    override suspend fun getMembersForBoard(boardId: String): Result<List<BoardMember>> {
+        return try {
+            val members = remoteBoard.getMembersForBoard(boardId)
+            Result.Success(members)
+        } catch(e: Exception) {
+            Result.Error("Failed to get members for board: ${e.message}")
         }
     }
 

@@ -9,17 +9,19 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import github.detrig.corporatekanbanboard.R
 import github.detrig.corporatekanbanboard.databinding.RcViewColumnPresentationItemBinding
+import github.detrig.corporatekanbanboard.domain.model.BoardAccess
+import github.detrig.corporatekanbanboard.domain.model.BoardMember
 import github.detrig.corporatekanbanboard.domain.model.Column
 import github.detrig.corporatekanbanboard.domain.model.Task
 
 class ColumnWithTasksRcViewAdapter(
     private val addTaskButtonClickListener: OnAddTaskButtonClickListener,
     private val taskClickListener: TasksRcViewAdapter.OnTaskClickListener,
-    private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit
+    private val onTaskMoved: (columnId: String, newTasksOrder: List<Task>) -> Unit,
+    private val currentUserRole: BoardAccess
 ) : RecyclerView.Adapter<ColumnWithTasksRcViewAdapter.ViewHolder>() {
 
     val columnsList: ArrayList<Column> = arrayListOf()
-    var tasksList: ArrayList<Task> = arrayListOf()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = RcViewColumnPresentationItemBinding.bind(view)
@@ -30,65 +32,69 @@ class ColumnWithTasksRcViewAdapter(
         init {
             binding.columnRcView.apply {
                 adapter = tasksRcViewAdapter
-                setupDragAndDrop()
+                //setupDragAndDrop()
             }
         }
 
-        private fun RecyclerView.setupDragAndDrop() {
-            val touchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
-                override fun getMovementFlags(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder
-                ): Int {
-                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-                    return makeMovementFlags(dragFlags, 0)
-                }
-
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    target: RecyclerView.ViewHolder
-                ): Boolean {
-                    val fromPosition = viewHolder.adapterPosition
-                    val toPosition = target.adapterPosition
-                    (adapter as? TasksRcViewAdapter)?.moveItem(fromPosition, toPosition)
-                    tasksList =
-                    return true
-                }
-
-                override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-                    super.onSelectedChanged(viewHolder, actionState)
-                    when (actionState) {
-                        ItemTouchHelper.ACTION_STATE_DRAG -> {
-                            viewHolder?.itemView?.alpha = 0.7f
-                            viewHolder?.itemView?.setBackgroundColor(
-                                ContextCompat.getColor(context, R.color.drag_background)
-                            )
-                        }
-                    }
-                }
-
-                override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-                    super.clearView(recyclerView, viewHolder)
-                    viewHolder.itemView.alpha = 1.0f
-                    viewHolder.itemView.background = null
-                }
-
-                override fun isLongPressDragEnabled(): Boolean = true
-
-                override fun onSwiped(
-                    viewHolder: RecyclerView.ViewHolder,
-                    direction: Int
-                ) {
-                }
-            })
-            touchHelper.attachToRecyclerView(this)
-        }
+//        private fun RecyclerView.setupDragAndDrop() {
+//            val touchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+//                override fun getMovementFlags(
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder
+//                ): Int {
+//                    val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+//                    return makeMovementFlags(dragFlags, 0)
+//                }
+//
+//                override fun onMove(
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    target: RecyclerView.ViewHolder
+//                ): Boolean {
+//                    val fromPosition = viewHolder.adapterPosition
+//                    val toPosition = target.adapterPosition
+//                    (adapter as? TasksRcViewAdapter)?.moveItem(fromPosition, toPosition)
+//                    tasksList =
+//                    return true
+//                }
+//
+//                override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+//                    super.onSelectedChanged(viewHolder, actionState)
+//                    when (actionState) {
+//                        ItemTouchHelper.ACTION_STATE_DRAG -> {
+//                            viewHolder?.itemView?.alpha = 0.7f
+//                            viewHolder?.itemView?.setBackgroundColor(
+//                                ContextCompat.getColor(context, R.color.drag_background)
+//                            )
+//                        }
+//                    }
+//                }
+//
+//                override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+//                    super.clearView(recyclerView, viewHolder)
+//                    viewHolder.itemView.alpha = 1.0f
+//                    viewHolder.itemView.background = null
+//                }
+//
+//                override fun isLongPressDragEnabled(): Boolean = true
+//
+//                override fun onSwiped(
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    direction: Int
+//                ) {
+//                }
+//            })
+//            touchHelper.attachToRecyclerView(this)
+//        }
 
         fun bind(column: Column) = with(binding) {
             columnsTitle.text = column.title
             tasksRcViewAdapter.update(column.tasks, column.id)
 
+            when (currentUserRole) {
+                BoardAccess.VIEWER -> binding.addTaskButton.visibility = View.GONE
+                else -> binding.addTaskButton.visibility = View.VISIBLE
+            }
             binding.addTaskButton.setOnClickListener {
                 addTaskButtonClickListener.clickAddTaskButton(column)
             }
